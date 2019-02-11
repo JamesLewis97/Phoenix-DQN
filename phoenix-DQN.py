@@ -12,6 +12,7 @@ from collections import deque
 
 
 class DQNetwork:
+
     def __init__(self, state_size, action_size, learning_rate, name='DQNetwork'):
         self.state_size = state_size
         self.action_size = action_size
@@ -198,14 +199,15 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 	if (explore_probability > exp_exp_tradeoff):
 	    # Make a random action (exploration)
 	    choice = random.randint(1,len(possible_actions))-1
-	    action = choice
+	    action = possible_actions[choice]
 	    
 	else:
 	    # Get action from Q-network (exploitation)
 	    # Estimate the Qs values state
 	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,40,40,4))})
 	    # Take the biggest Q value (= the best action)
-	    action = np.argmax(Qs)
+	    choice = np.argmax(Qs)
+            action=possible_actions[choice]
 		    
 		    
         return action, explore_probability
@@ -214,6 +216,7 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 # Some vague hyper parameters i took to get started ##
 ######################################################
 ### MODEL HYPERPARAMETERS
+action_size=8
 learning_rate =  0.00025      # Alpha (aka learning rate)
 
 ### TRAINING HYPERPARAMETERS
@@ -224,7 +227,7 @@ batch_size = 64                # Batch size
 # Exploration parameters for epsilon greedy strategy
 explore_start = 1.0            # exploration probability at start
 explore_stop = 0.01            # minimum exploration probability 
-decay_rate = 0.000001           # exponential decay rate for exploration prob
+decay_rate = 0.00000005           # exponential decay rate for exploration prob
 
 # Q learning hyperparameters
 gamma = 0.9                    # Discounting rate
@@ -243,186 +246,256 @@ training = False
 episode_render = False
 
 
-
-
 ######################################################
 ################### Actual Code running ##############
 ######################################################
 
 env=gym.make('Phoenix-v0')
-possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
-DQN=DQNetwork([40,40,4],env.action_space.n,0.1)
+DQN=DQNetwork([40,40,4],action_size,learning_rate)
 memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
-
-
-
-
-####################
-#Instantiate Memory#
-####################
-
+possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
 stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
-for i in range(pretrain_length):
-    # If it's the first step
-    if i == 0:
-        observation = env.reset()
+
+####################
+##Show agent########
+####################
+show=False
+if show:
+    print(True)
+    with tf.Session() as sess:
+        total_test_rewards=[]
+
+        #loadModel
+        saver.restore(sess,"./models/model.ckpt")
         
-        observation, stacked_frames = stack_frames(stacked_frames, observation, True)
+        for episode in range(100):
+            total_rewards=0
+
+            observation=env.reset()
+            observation,stacked_frames= stack_frames(stacked_frames,observation,True)
+
+            while True:
+                
+		Qs=sess.run(DQN.output, feed_dict = {DQN.inputs_: observation.reshape(1,40,40,4)})
+                choice=np.argmax(Qs)
+                
+                next_observation,reward,done,_=env.step(choice)
+                env.render()
+                total_rewards+=reward
+
+                if done:
+                    print ("Score", total_rewards)
+                    total_test_rewards.append(total_rewards)
+                    break
+                
+                next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
+                observation = next_observation
+
+
+
+else :
+    ####################
+    #Tensor board setup#
+    ####################
+
+    writer = tf.summary.FileWriter("dqn/1")
+
+
+    tf.summary.scalar("Loss", DQN.loss)
+
+    write_op = tf.summary.merge_all()
+
+
+
+
+
+    ####################
+    #Instantiate Memory#
+    ####################
+
+    for i in range(pretrain_length):
+        # If it's the first step
+        if i == 0:
+            observation = env.reset()
+            
+            observation, stacked_frames = stack_frames(stacked_frames, observation, True)
+            
+        # Get the next_state, the rewards, done by taking a random action
+        choice=random.randint(1,len(possible_actions))-1
+        action = possible_actions[choice]
         
-    # Get the next_state, the rewards, done by taking a random action
-    action = random.randint(1,len(possible_actions))-1
-    next_observation, reward, done, _ = env.step(action)
-    
-    #env.render()
-    
-    # Stack the frames
-    next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
-    
-    
-    # If the episode is finished (we're dead 3x)
-    if done:
-        # We finished the episode
-        next_observation = np.zeros(state.shape)
+        next_observation, reward, done, _ = env.step(choice)
         
-        # Add experience to memory
-        memory.add((observation, action, reward, next_state, done))
-        
-        # Start a new episode
-        observation = env.reset()
+        #env.render()
         
         # Stack the frames
-        observation, stacked_frames = stack_frames(stacked_frames, state, True)
+        next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
         
-    else:
-        # Add experience to memory
-        memory.add((observation, action, reward, next_observation, done))
         
-        # Our new state is now the next_state
-        observation  = next_observation
+        # If the episode is finished (we're dead 3x)
+        if done:
+            # We finished the episode
+            next_observation = np.zeros(state.shape)
+            
+            # Add experience to memory
+            memory.add((observation, action, reward, next_state, done))
+            
+            # Start a new episode
+            observation = env.reset()
+            
+            # Stack the frames
+            observation, stacked_frames = stack_frames(stacked_frames, state, True)
+            
+        else:
+            # Add experience to memory
+            memory.add((observation, action, reward, next_observation, done))
+            
+            # Our new state is now the next_state
+            observation  = next_observation
 
-###################
-#Memory Instantiated#
-####################y
-
-
-rewards_list=[]
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
-   
-    stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
-    #Iinitialize the decay rate (that will use to reduce epsilon) 
-    decay_step = 0
-    
-    for episode in range(100):
-	# Set step to 0
-	step = 0
-	
-	# Initialize the rewards of the episode
-	episode_rewards = []
-	
-	# Make a new episode and observe the first state
-	observation = env.reset()
-	
-	# Remember that stack frame function also call our preprocess function.
-	observation, stacked_frames = stack_frames(stacked_frames, observation, True)
+    ###################
+    #Memory Instantiated#
+    ####################y
 
 
-
-	while step < max_steps:
-                step += 1
-                
-                #Increase decay_step
-                decay_step +=1
-                
-                # Predict the action to take and take it
-                
-                action, explore_probability = predict_action(explore_start, explore_stop, decay_rate, decay_step, observation, possible_actions)
-                
-                #Perform the action and get the next_state, reward, and done information
-                next_observation,reward,done,info=env.step(action)
-                #next_observation, reward, done, info = env.step(action)
-                
-                if episode_render:
-                    env.render()
-                
-                # Add the reward to total reward
-                episode_rewards.append(reward)
+    rewards_list=[]
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+       
+        stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+        #Iinitialize the decay rate (that will use to reduce epsilon) 
+        decay_step = 0
+        
+        for episode in range(1000):
+            # Set step to 0
+            step = 0
+            
+            # Initialize the rewards of the episode
+            episode_rewards = []
+            
+            # Make a new episode and observe the first state
+            observation = env.reset()
+            
+            # Remember that stack frame function also call our preprocess function.
+            observation, stacked_frames = stack_frames(stacked_frames, observation, True)
 
 
 
-		#if the game is finished
-                if done:
-                    # The episode ends so no next state
+            while step < max_steps:
+                    step += 1
                     
-    		    stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+                    #Increase decay_step
+                    decay_step +=1
+                    
+                    # Predict the action to take and take it
+                    
+                    action, explore_probability = predict_action(explore_start, explore_stop, decay_rate, decay_step, observation,possible_actions)
+                   
 
-                    # Set step = max_steps to end the episode
-                    step = max_steps
-
-                    # Get the total reward of the episode
-                    total_reward = np.sum(episode_rewards)
-
-                    print('Episode: {}'.format(episode),
-                                  'Total reward: {}'.format(total_reward),
-                                  'Explore P: {:.4f}'.format(explore_probability))
-                                #'Training Loss {:.4f}'.format(loss))
-
-                    rewards_list.append((episode, total_reward))
-
-                    # Store transition <st,at,rt+1,st+1> in memory D
-                    #memory.add((state, action, reward, next_state, done))
-
-                else:
-                    # Stack the frame of the next_state
-                    next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
-                
-                    # Add experience to memory
-                    #memory.add((state, action, reward, next_state, done))
-
-                    # st+1 is now our current state
-                    observation = next_observation
-
-                ###################
-                #LEARNING PART#####
-                #Experiance Replay#
-                ###################
-
-                # Obtain random mini-batch from memory
-                batch = memory.sample(batch_size)
-                states_mb = np.array([each[0] for each in batch], ndmin=3)
-                actions_mb = np.array([each[1] for each in batch])
-                rewards_mb = np.array([each[2] for each in batch]) 
-                next_states_mb = np.array([each[3] for each in batch], ndmin=3)
-                dones_mb = np.array([each[4] for each in batch])
-
-                target_Qs_batch = []
-
-                # Get Q values for next_state 
-                Qs_next_state = sess.run(DQN.output, feed_dict = {DQN.inputs_: next_states_mb})
+                    choice=action.tolist().index(1)
+                    
+                    #Perform the action and get the next_state, reward, and done information
+                    next_observation,reward,done,info=env.step(choice)
+                    #next_observation, reward, done, info = env.step(action)
+                    
+                    if episode_render:
+                        env.render()
+                    
+                    # Add the reward to total reward
+                    episode_rewards.append(reward)
 
 
-                #################
-                #Update Q values#
-                #################
 
-		#Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s', a')
-                for i in range(0, len(batch)):
-                    terminal = dones_mb[i]
-
-                    # If we are in a terminal state, only equals reward
-                    if terminal:
-                        target_Qs_batch.append(rewards_mb[i])
+                    #if the game is finished
+                    if done:
+                        # The episode ends so no next state
                         
+                        stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+
+                        # Set step = max_steps to end the episode
+                        step = max_steps
+
+                        # Get the total reward of the episode
+                        total_reward = np.sum(episode_rewards)
+                        
+                        print('Episode: {}'.format(episode),
+                                      'Total reward: {}'.format(total_reward),
+                                      'Explore P: {:.4f}'.format(explore_probability))
+                                    #'Training Loss {:.4f}'.format(loss))
+
+
+                        # Store transition <st,at,rt+1,st+1> in memory D
+                        #memory.add((state, action, reward, next_state, done))
+
                     else:
-                        target = rewards_mb[i] + gamma * np.max(Qs_next_state[i])
-                        target_Qs_batch.append(target)
-                        
+                        # Stack the frame of the next_state
+                        next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
+                    
+                        # Add experience to memory
+                        #memory.add((state, action, reward, next_state, done))
+
+                        # st+1 is now our current state
+                        observation = next_observation
+
+                    ###################
+                    #LEARNING PART#####
+                    #Experiance Replay#
+                    ###################
+
+                    # Obtain random mini-batch from memory
+                    batch = memory.sample(batch_size)
+                    states_mb = np.array([each[0] for each in batch], ndmin=3)
+                    actions_mb = np.array([each[1] for each in batch])
+                    rewards_mb = np.array([each[2] for each in batch]) 
+                    next_states_mb = np.array([each[3] for each in batch], ndmin=3)
+                    dones_mb = np.array([each[4] for each in batch])
+
+                    target_Qs_batch = []
+
+                    # Get Q values for next_state 
+                    Qs_next_state = sess.run(DQN.output, feed_dict = {DQN.inputs_: next_states_mb})
 
 
+                    #################
+                    #Update Q values#
+                    #################
+
+                    #Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s', a')
+                    for i in range(0, len(batch)):
+                        terminal = dones_mb[i]
+
+                        # If we are in a terminal state, only equals reward
+                        if terminal:
+                            target_Qs_batch.append(rewards_mb[i])
+                            
+                        else:
+                            target = rewards_mb[i] + gamma * np.max(Qs_next_state[i])
+                            target_Qs_batch.append(target)
+                            
 
 
+                    targets_mb=np.array([each for each in target_Qs_batch])
 
+                    #print(actions_mb)
+                    #print(targets_mb)
+                    loss, _ = sess.run([DQN.loss, DQN.optimizer],
+                                            feed_dict={DQN.inputs_: states_mb,
+                                                       DQN.target_Q: targets_mb,
+                                                       DQN.actions_: actions_mb})
+
+                    # Write TF Summaries
+                    summary = sess.run(write_op, feed_dict={DQN.inputs_: states_mb,
+                                                           DQN.target_Q: targets_mb,
+                                                           DQN.actions_: actions_mb})
+
+                    writer.add_summary(summary,episode)
+                    writer.flush()
+
+            # Save model every 5 episodes
+            if episode % 5 == 0:
+                save_path = saver.save(sess, "./models/model.ckpt")
+                print("Model Saved")
 
 
 

@@ -100,6 +100,29 @@ class DQNetwork:
 
 
 
+
+
+
+class Memory():
+    def __init__(self, max_size):
+        self.buffer = deque(maxlen = max_size)
+    
+    def add(self, experience):
+        self.buffer.append(experience)
+    
+    def sample(self, batch_size):
+        buffer_size = len(self.buffer)
+        index = np.random.choice(np.arange(buffer_size),
+                                size = batch_size,
+                                replace = False)
+        
+        return [self.buffer[i] for i in index]
+
+
+
+
+
+
 def preprocess_frame(state):
     gray=rgb2gray(state)
     #cropped_frame=gray[8:-12,4:-12]
@@ -180,11 +203,9 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 	else:
 	    # Get action from Q-network (exploitation)
 	    # Estimate the Qs values state
-	    Qs = sess.run(DQNetwork.output, feed_dict = {DQNetwork.inputs_: state.reshape((1, 40,40,4))})
-	    
+	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,40,40,4))})
 	    # Take the biggest Q value (= the best action)
-	    choice = np.argmax(Qs)
-	    action = choice
+	    action = np.argmax(Qs)
 		    
 		    
         return action, explore_probability
@@ -203,7 +224,7 @@ batch_size = 64                # Batch size
 # Exploration parameters for epsilon greedy strategy
 explore_start = 1.0            # exploration probability at start
 explore_stop = 0.01            # minimum exploration probability 
-decay_rate = 0.00001           # exponential decay rate for exploration prob
+decay_rate = 0.000001           # exponential decay rate for exploration prob
 
 # Q learning hyperparameters
 gamma = 0.9                    # Discounting rate
@@ -231,9 +252,61 @@ episode_render = False
 env=gym.make('Phoenix-v0')
 possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
 DQN=DQNetwork([40,40,4],env.action_space.n,0.1)
+memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
 
 
+
+
+####################
+#Instantiate Memory#
+####################
+
+stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+for i in range(pretrain_length):
+    # If it's the first step
+    if i == 0:
+        observation = env.reset()
+        
+        observation, stacked_frames = stack_frames(stacked_frames, observation, True)
+        
+    # Get the next_state, the rewards, done by taking a random action
+    action = random.randint(1,len(possible_actions))-1
+    next_observation, reward, done, _ = env.step(action)
+    
+    #env.render()
+    
+    # Stack the frames
+    next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
+    
+    
+    # If the episode is finished (we're dead 3x)
+    if done:
+        # We finished the episode
+        next_observation = np.zeros(state.shape)
+        
+        # Add experience to memory
+        memory.add((observation, action, reward, next_state, done))
+        
+        # Start a new episode
+        observation = env.reset()
+        
+        # Stack the frames
+        observation, stacked_frames = stack_frames(stacked_frames, state, True)
+        
+    else:
+        # Add experience to memory
+        memory.add((observation, action, reward, next_observation, done))
+        
+        # Our new state is now the next_state
+        observation  = next_observation
+
+###################
+#Memory Instantiated#
+####################y
+
+
+rewards_list=[]
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
    
@@ -241,7 +314,7 @@ with tf.Session() as sess:
     #Iinitialize the decay rate (that will use to reduce epsilon) 
     decay_step = 0
     
-    for episode in range(10):
+    for episode in range(100):
 	# Set step to 0
 	step = 0
 	
@@ -263,6 +336,7 @@ with tf.Session() as sess:
                 decay_step +=1
                 
                 # Predict the action to take and take it
+                
                 action, explore_probability = predict_action(explore_start, explore_stop, decay_rate, decay_step, observation, possible_actions)
                 
                 #Perform the action and get the next_state, reward, and done information
@@ -291,8 +365,8 @@ with tf.Session() as sess:
 
                     print('Episode: {}'.format(episode),
                                   'Total reward: {}'.format(total_reward),
-                                  'Explore P: {:.4f}'.format(explore_probability),
-                                'Training Loss {:.4f}'.format(loss))
+                                  'Explore P: {:.4f}'.format(explore_probability))
+                                #'Training Loss {:.4f}'.format(loss))
 
                     rewards_list.append((episode, total_reward))
 
@@ -309,6 +383,41 @@ with tf.Session() as sess:
                     # st+1 is now our current state
                     observation = next_observation
 
+                ###################
+                #LEARNING PART#####
+                #Experiance Replay#
+                ###################
+
+                # Obtain random mini-batch from memory
+                batch = memory.sample(batch_size)
+                states_mb = np.array([each[0] for each in batch], ndmin=3)
+                actions_mb = np.array([each[1] for each in batch])
+                rewards_mb = np.array([each[2] for each in batch]) 
+                next_states_mb = np.array([each[3] for each in batch], ndmin=3)
+                dones_mb = np.array([each[4] for each in batch])
+
+                target_Qs_batch = []
+
+                # Get Q values for next_state 
+                Qs_next_state = sess.run(DQN.output, feed_dict = {DQN.inputs_: next_states_mb})
+
+
+                #################
+                #Update Q values#
+                #################
+
+		#Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s', a')
+                for i in range(0, len(batch)):
+                    terminal = dones_mb[i]
+
+                    # If we are in a terminal state, only equals reward
+                    if terminal:
+                        target_Qs_batch.append(rewards_mb[i])
+                        
+                    else:
+                        target = rewards_mb[i] + gamma * np.max(Qs_next_state[i])
+                        target_Qs_batch.append(target)
+                        
 
 
 
@@ -329,7 +438,39 @@ with tf.Session() as sess:
 
 
 
-#test_environment(500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

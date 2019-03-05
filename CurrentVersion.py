@@ -21,8 +21,8 @@ class DQNetwork:
             # We create the placeholders
             # *state_size means that we take each elements of state_size in tuple hence is like if we wrote
             # [None, 84, 84, 4]
-            self.inputs_ = tf.placeholder(tf.float32, [None,40,40,4], name="inputs")
-            self.actions_ = tf.placeholder(tf.float32, [None, self.action_size], name="actions_")
+            self.inputs_ = tf.placeholder(tf.float32, [None,80,80,4], name="inputs")
+            self.actions_ = tf.placeholder(tf.float32, [None,self.action_size], name="actions_")
             
             # Remember that target_Q is the R(s,a) + ymax Qhat(s', a')
             self.target_Q = tf.placeholder(tf.float32, [None], name="target")
@@ -127,7 +127,7 @@ def preprocess_frame(state):
     gray=rgb2gray(state)
     #cropped_frame=gray[8:-12,4:-12]
     cropped_frame=gray[22:-28,:]
-    downscale=block_reduce(cropped_frame,block_size=(4,4),func=np.mean)
+    downscale=block_reduce(cropped_frame,block_size=(2,2),func=np.mean)
     downscale[downscale<.1]=0
     downscale[downscale>=.1]=1
     return downscale
@@ -138,7 +138,7 @@ def stack_frames(stacked_frames,state,is_new_episode):
     
     if is_new_episode:
         
-        stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+        stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
         for i in range(stack_size):
             stacked_frames.append(frame)
     
@@ -157,7 +157,7 @@ def test_environment(number_of_episodes):
 
     #leads to  action every 60/4 of a second
 
-    stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+    stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
     for i_episode in range(number_of_episodes):
         observation=env.reset()
         totalRew=0
@@ -203,9 +203,10 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 	else:
 	    # Get action from Q-network (exploitation)
 	    # Estimate the Qs values state
-	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,40,40,4))})
+	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,80,80,4))})
 	    # Take the biggest Q value (= the best action)
-	    action = np.argmax(Qs)
+	    choice = np.argmax(Qs)
+            action=choice
 		    
 		    
         return action, explore_probability
@@ -251,7 +252,7 @@ episode_render = False
 
 env=gym.make('Phoenix-v0')
 possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
-DQN=DQNetwork([40,40,4],env.action_space.n,0.1)
+DQN=DQNetwork([80,80,4],env.action_space.n,0.1)
 memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
 
@@ -262,7 +263,7 @@ saver=tf.train.Saver()
 #Instantiate Memory#
 ####################
 
-stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
 for i in range(pretrain_length):
     # If it's the first step
     if i == 0:
@@ -306,15 +307,34 @@ for i in range(pretrain_length):
 ####################y
 
 
+
+
+
+
+
+
+#Setup TensorBoard Writer
+writer = tf.summary.FileWriter("dqn/1")
+
+## Losses
+tf.summary.scalar("Loss", DQN.loss)
+
+write_op = tf.summary.merge_all()
+
+#################
+#Tensor Board####
+################
+
 rewards_list=[]
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
    
-    stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+    stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
     #Iinitialize the decay rate (that will use to reduce epsilon) 
     decay_step = 0
-    
-    for episode in range(100):
+    runningTotal=0
+
+    for episode in range(50000):
 	# Set step to 0
 	step = 0
 	
@@ -339,10 +359,11 @@ with tf.Session() as sess:
                 
                 action, explore_probability = predict_action(explore_start, explore_stop, decay_rate, decay_step, observation, possible_actions)
                 
+                #choice=action.tolist().index(1)  
                 #Perform the action and get the next_state, reward, and done information
                 next_observation,reward,done,info=env.step(action)
                 #next_observation, reward, done, info = env.step(action)
-                
+                 
                 if episode_render:
                     env.render()
                 
@@ -355,23 +376,27 @@ with tf.Session() as sess:
                 if done:
                     # The episode ends so no next state
                     
-    		    stacked_frames=deque([np.zeros((40,40),dtype=np.int) for i in range (stack_size)],maxlen=4)
+    		    stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
 
                     # Set step = max_steps to end the episode
                     step = max_steps
 
                     # Get the total reward of the episode
                     total_reward = np.sum(episode_rewards)
-
+                    runningTotal=runningTotal+total_reward
                     print('Episode: {}'.format(episode),
                                   'Total reward: {}'.format(total_reward),
-                                  'Explore P: {:.4f}'.format(explore_probability))
+                                  'Explore P: {:.4f}'.format(explore_probability),
+                                  'Running Average: {}'.format(runningTotal/(episode+1))
+                                  )
                                 #'Training Loss {:.4f}'.format(loss))
 
                     rewards_list.append((episode, total_reward))
 
                     next_observation = np.zeros(observation.shape)
                     # Store transition <st,at,rt+1,st+1> in memory D
+
+
                     memory.add((observation, action, reward, next_observation, done))
 
                 else:
@@ -384,32 +409,53 @@ with tf.Session() as sess:
                     # st+1 is now our current state
                     observation = next_observation
 
-                ###################
-                #LEARNING PART#####
-                #Experiance Replay#
-                ###################
+                
+                for i in range(1):
+                    
+                    ###################
+                    #LEARNING PART#####
+                    #Experiance Replay#
+                    ###################
+                    # Obtain random mini-batch from memory
+                    
 
-                # Obtain random mini-batch from memory
-                batch = memory.sample(batch_size)
-                states_mb = np.array([each[0] for each in batch], ndmin=3)
-                actions_mb = np.array([each[1] for each in batch])
-                rewards_mb = np.array([each[2] for each in batch]) 
-                next_states_mb = np.array([each[3] for each in batch], ndmin=3)
-                dones_mb = np.array([each[4] for each in batch])
+                                   
+                    batch = memory.sample(batch_size)
+                    
+                    states_mb = np.array([each[0] for each in batch], ndmin=3)
+                    
+                     
+                    actions_mb= np.stack([each[1] for each in batch])
+                    
+                    
+                    #print(len([each[1] for each in batch]))
+                    #print(len([each[2] for each in batch]),"L")
+                    
+                    rewards_mb = np.array([each[2] for each in batch]) 
+                    next_states_mb = np.array([each[3] for each in batch], ndmin=3)
+                    dones_mb = np.array([each[4] for each in batch])
+                    
 
-                target_Qs_batch = []
+                    target_Qs_batch = []
+                    
+                    # Get Q values for next_state 
+                    Qs_next_state = sess.run(DQN.output, feed_dict = {DQN.inputs_: next_states_mb})
 
-                # Get Q values for next_state 
-                Qs_next_state = sess.run(DQN.output, feed_dict = {DQN.inputs_: next_states_mb})
+                    
+                    #################
+                    #Update Q values#
+                    #################
 
+                    #Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s', a')
+                    
 
-                #################
-                #Update Q values#
-                #################
-
-		#Set Q_target = r if the episode ends at s+1, otherwise set Q_target = r + gamma*maxQ(s', a')
-                for i in range(0, len(batch)):
-                    terminal = dones_mb[i]
+                    temp=np.zeros([batch_size,8])
+                     
+                    for i in range(len(actions_mb)):
+                        temp[i]=possible_actions[actions_mb[i]]
+                
+                    for i in range(0, len(batch)):
+                        terminal = dones_mb[i]
 
                     # If we are in a terminal state, only equals reward
                     if terminal:
@@ -422,7 +468,24 @@ with tf.Session() as sess:
 
 
 
+                    targets_mb = np.array([each for each in target_Qs_batch])
 
+                    loss, _ = sess.run([DQN.loss, DQN.optimizer],
+                                        feed_dict={DQN.inputs_: states_mb,
+                                                   DQN.target_Q: targets_mb,
+                                                   DQN.actions_: temp})
+
+                    # Write TF Summaries
+                    summary = sess.run(write_op, feed_dict={DQN.inputs_: states_mb,
+                                                       DQN.target_Q: targets_mb,
+                                                       DQN.actions_: temp})
+                    writer.add_summary(summary, episode)
+                    writer.flush()
+
+            # Save model every 5 episodes
+        if episode % 5 == 0:
+                save_path = saver.save(sess, "./models/model.ckpt")
+                print("Model Saved")
 
 
 

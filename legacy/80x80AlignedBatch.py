@@ -379,7 +379,7 @@ else :
         for episode in range(5000):
             # Set step to 0
             step = 0
-            
+          
             # Initialize the rewards of the episode
             episode_rewards = []
             

@@ -368,7 +368,7 @@ else :
     with tf.Session() as sess:
        
         #Load a model if it exists
-        saver.restore(sess,"./models/model.ckpt")
+        #saver.restore(sess,"./models/model.ckpt")
         #print("Loaded model")
         sess.run(tf.global_variables_initializer())
        

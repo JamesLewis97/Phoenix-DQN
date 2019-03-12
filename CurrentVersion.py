@@ -152,39 +152,6 @@ def stack_frames(stacked_frames,state,is_new_episode):
     #print(stacked_frames)
     return stacked_state,stacked_frames
 
-def test_environment(number_of_episodes):
-    
-
-    #leads to  action every 60/4 of a second
-
-    stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
-    for i_episode in range(number_of_episodes):
-        observation=env.reset()
-        totalRew=0
-        is_new_episode=True
-        for t in range(100000):
-            #env.render()
-            action=env.action_space.sample()
-             
-            observation,reward,done,info=env.step(action)
-            #test=tf.Session.run(DQN.output,feed_dict={DQN.inputs_:observation}) 
-            stacked_frames=stack_frames(stacked_frames,observation,is_new_episode)
-            is_new_episode=False
-            
-            plt.imshow(stacked_frames[0],interpolation='nearest')
-            plt.show()
-            observation=np.around(observation,2)
-            totalRew+=reward
-            
-            if done:
-                break
-        print(i_episode,totalRew)
-        #averageScores.append(totalRew/500)
-    
-    env.close();
-
-
-
 
 def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,actions):
 	##EPSILON GREEDY STRATEGY
@@ -215,7 +182,7 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 # Some vague hyper parameters i took to get started ##
 ######################################################
 ### MODEL HYPERPARAMETERS
-learning_rate =  0.00025      # Alpha (aka learning rate)
+learning_rate =  0.0025      # Alpha (aka learning rate)
 
 ### TRAINING HYPERPARAMETERS
 total_episodes = 50            # Total episodes for training

@@ -215,7 +215,8 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 # Some vague hyper parameters i took to get started ##
 ######################################################
 ### MODEL HYPERPARAMETERS
-learning_rate =  0.00025      # Alpha (aka learning rate)
+learning_rate =  0.05      # Alpha (aka learning rate)
+
 
 ### TRAINING HYPERPARAMETERS
 total_episodes = 50            # Total episodes for training
@@ -255,7 +256,6 @@ possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
 DQN=DQNetwork([80,80,4],env.action_space.n,0.1)
 memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
-
 
 
 
@@ -483,6 +483,13 @@ with tf.Session() as sess:
                     writer.flush()
 
             # Save model every 5 episodes
+
+
+	#vars = tf.trainable_variables()
+	#vars_vals = sess.run(vars)
+	#for var, val in zip(vars, vars_vals):
+        #    if var.name=="DQNetwork/conv1/bias:0":
+        #       print("var: {}, value: {}".format(var.name, val)) #...or sort it in a list....        print(var)
         if episode % 5 == 0:
                 save_path = saver.save(sess, "./models/model.ckpt")
                 print("Model Saved")

@@ -2,7 +2,6 @@
 from __future__ import print_function
 import gym
 import numpy as np
-import rebin
 import tensorflow as tf
 import random
 from matplotlib import pyplot as plt
@@ -22,7 +21,7 @@ class DQNetwork:
             # We create the placeholders
             # *state_size means that we take each elements of state_size in tuple hence is like if we wrote
             # [None, 84, 84, 4]
-            self.inputs_ = tf.placeholder(tf.float32, [None,80,80,4], name="inputs")
+            self.inputs_ = tf.placeholder(tf.float32, [None,160,160,4], name="inputs")
             self.actions_ = tf.placeholder(tf.float32, [None, self.action_size], name="actions_")
              
             # Remember that target_Q is the R(s,a) + ymax Qhat(s', a')
@@ -95,7 +94,7 @@ class DQNetwork:
             # The loss is the difference between our predicted Q_values and the Q_target
             # Sum(Qtarget - Q)^2
             #self.loss = tf.reduce_mean(tf.square(self.target_Q - self.Q))
-            self.loss= huber_loss (self.Q,self.target_Q,5.)           
+            self.loss= huber_loss (self.Q,self.target_Q,3.)           
             self.optimizer = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
 
@@ -139,8 +138,9 @@ def preprocess_frame(state):
     	gray=rgb2gray(state)
     	#cropped_frame=gray[8:-12,4:-12]
     	cropped_frame=gray[22:-28,:]
-	downscale=block_reduce(cropped_frame,block_size=(2,2),func=np.mean)
-    	#downscale=cropped_frame
+	
+        #downscale=block_reduce(cropped_frame,block_size=(2,2),func=np.mean)
+    	downscale=cropped_frame
         downscale[downscale<.1]=0
     	downscale[downscale>=.1]=1
         #print(downscale.shape)
@@ -154,7 +154,7 @@ def stack_frames(stacked_frames,state,is_new_episode):
     
     if is_new_episode:
         
-        stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
+        stacked_frames=deque([np.zeros((160,160),dtype=np.int) for i in range (stack_size)],maxlen=4)
         for i in range(stack_size):
             stacked_frames.append(frame)
     
@@ -173,7 +173,7 @@ def test_environment(number_of_episodes):
 
     #leads to  action every 60/4 of a second
 
-    stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
+    stacked_frames=deque([np.zeros((160,160),dtype=np.int) for i in range (stack_size)],maxlen=4)
     for i_episode in range(number_of_episodes):
         observation=env.reset()
         totalRew=0
@@ -219,7 +219,7 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 	else:
 	    # Get action from Q-network (exploitation)
 	    # Estimate the Qs values state
-	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,80,80,4))})
+	    Qs = sess.run(DQN.output, feed_dict = {DQN.inputs_:observation.reshape((1,160,160,4))})
 	    # Take the biggest Q value (= the best action)
 	    choice = np.argmax(Qs)
             action=possible_actions[choice]
@@ -249,7 +249,7 @@ gamma = 0.9                    # Discounting rate
 
 ### MEMORY HYPERPARAMETERS
 pretrain_length = batch_size   # Number of experiences stored in the Memory when initialized for the first time
-memory_size = 50000          # Number of experiences the Memory can keep
+memory_size = 5000          # Number of experiences the Memory can keep
 
 ### PREPROCESSING HYPERPARAMETERS
 stack_size = 4                 # Number of frames stacked
@@ -266,12 +266,12 @@ episode_render = False
 ######################################################
 tf.reset_default_graph()
 env=gym.make('Phoenix-v0')
-DQN=DQNetwork([80,80,4],action_size,learning_rate)
+DQN=DQNetwork([160,160,4],action_size,learning_rate)
 memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
 possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
 #print(possible_actions)
-stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
+stacked_frames=deque([np.zeros((160,160),dtype=np.int) for i in range (stack_size)],maxlen=4)
 
 ####################
 ##Show agent########
@@ -293,7 +293,7 @@ if show:
 
             while True:
                 
-		Qs=sess.run(DQN.output, feed_dict = {DQN.inputs_: observation.reshape(1,80,80,4)})
+		Qs=sess.run(DQN.output, feed_dict = {DQN.inputs_: observation.reshape(1,160,160,4)})
                 choice=np.argmax(Qs)
                 
                 next_observation,reward,done,_=env.step(choice)
@@ -379,11 +379,11 @@ else :
     with tf.Session() as sess:
        
         #Load a model if it exists
-        saver.restore(sess,"./models/model.ckpt")
+        #saver.restore(sess,"./models/model.ckpt")
         #print("Loaded model")
-        #sess.run(tf.global_variables_initializer())
+        sess.run(tf.global_variables_initializer())
        
-        stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
+        stacked_frames=deque([np.zeros((160,160),dtype=np.int) for i in range (stack_size)],maxlen=4)
         #Iinitialize the decay rate (that will use to reduce epsilon) 
         decay_step = 0
         runningTotal=0        
@@ -431,7 +431,7 @@ else :
                     if done:
                         # The episode ends so no next state
                         
-                        stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
+                        stacked_frames=deque([np.zeros((160,160),dtype=np.int) for i in range (stack_size)],maxlen=4)
 
                         # Set step = max_steps to end the episode
                         step = max_steps

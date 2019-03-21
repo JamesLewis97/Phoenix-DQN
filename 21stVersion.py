@@ -1,8 +1,7 @@
-#!/usr/bin/python
+
 from __future__ import print_function
 import gym
 import numpy as np
-import rebin
 import tensorflow as tf
 import random
 from matplotlib import pyplot as plt
@@ -13,12 +12,12 @@ from collections import deque
 
 class DQNetwork:
 
-    def __init__(self, state_size, action_size, learning_rate, name='DQNetwork'):
+    def __init__(self, state_size, action_size, learning_rate, name):
         self.state_size = state_size
         self.action_size = action_size
         self.learning_rate = learning_rate
-        
-        with tf.variable_scope(name):
+        self.name=name 
+        with tf.variable_scope(self.name):
             # We create the placeholders
             # *state_size means that we take each elements of state_size in tuple hence is like if we wrote
             # [None, 84, 84, 4]
@@ -93,9 +92,11 @@ class DQNetwork:
             self.Q = tf.reduce_sum(tf.multiply(self.output, self.actions_))
             
             # The loss is the difference between our predicted Q_values and the Q_target
+
             # Sum(Qtarget - Q)^2
+            
             #self.loss = tf.reduce_mean(tf.square(self.target_Q - self.Q))
-            self.loss= huber_loss (self.Q,self.target_Q,5.)           
+            self.loss= huber_loss (self.Q,self.target_Q,3.)           
             self.optimizer = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
 
@@ -227,6 +228,45 @@ def predict_action(explore_start,explore_stop,decar_rate,decay_step,observation,
 		    
         return action, explore_probability
 
+
+
+
+###################################################
+
+
+#This function helps us to copy one set of variables to another
+# In our case we use it when we want to copy the parameters of DQN to Target_network
+# Thanks of the very good implementation of Arthur Juliani https://github.com/awjuliani
+def update_target_graph():
+    
+    # Get the parameters of our DQNNetwork
+    from_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "DQNetwork")
+    
+    # Get the parameters of our Target_network
+    to_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "TargetNetwork")
+
+    op_holder = []
+    
+    # Update our target_network parameters with DQNNetwork parameters
+    for from_var,to_var in zip(from_vars,to_vars):
+        op_holder.append(to_var.assign(from_var))
+    return op_holder
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ######################################################
 # Some vague hyper parameters i took to get started ##
 ######################################################
@@ -266,7 +306,10 @@ episode_render = False
 ######################################################
 tf.reset_default_graph()
 env=gym.make('Phoenix-v0')
-DQN=DQNetwork([80,80,4],action_size,learning_rate)
+
+
+DQN=DQNetwork([80,80,4],action_size,learning_rate, name="DQNetwork")
+Target=DQNetwork([80,80,4],action_size,learning_rate,name="TargetNetwork")
 memory=Memory(max_size=memory_size)
 saver=tf.train.Saver()
 possible_actions = np.array(np.identity(env.action_space.n,dtype=int).tolist())
@@ -518,9 +561,11 @@ else :
             # Save model every 5 episodes
 
             if episode % 5 == 0:
+                update_target= update_target_graph()
+                sess.run(update_target)
+                
                 save_path = saver.save(sess, "./models/model.ckpt")
-                print("Model Saved")
-
+                print("Model updated and saved")
 
 
 

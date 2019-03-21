@@ -2,7 +2,6 @@
 from __future__ import print_function
 import gym
 import numpy as np
-import rebin
 import tensorflow as tf
 import random
 from matplotlib import pyplot as plt
@@ -93,9 +92,11 @@ class DQNetwork:
             self.Q = tf.reduce_sum(tf.multiply(self.output, self.actions_))
             
             # The loss is the difference between our predicted Q_values and the Q_target
+
             # Sum(Qtarget - Q)^2
+            
             #self.loss = tf.reduce_mean(tf.square(self.target_Q - self.Q))
-            self.loss= huber_loss (self.Q,self.target_Q,5.)           
+            self.loss= huber_loss (self.Q,self.target_Q,3.)           
             self.optimizer = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
 

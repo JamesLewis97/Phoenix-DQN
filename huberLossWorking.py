@@ -240,8 +240,8 @@ max_steps = 10000              # Max possible steps in an episode
 batch_size = 1000                # Batch size
 
 # Exploration parameters for epsilon greedy strategy
-explore_start = 0.1            # exploration probability at start
-explore_stop = 0.1          # minimum exploration probability 
+explore_start = 0.5            # exploration probability at start
+explore_stop = 0.5           # minimum exploration probability 
 decay_rate = 0.00000           # exponential decay rate for exploration prob
 
 # Q learning hyperparameters
@@ -352,8 +352,8 @@ else :
         # If the episode is finished (we're dead 3x)
         if done:
             # We finished the episode
-            
             next_observation = np.zeros(observation.shape)
+            
             # Add experience to memory
             memory.add((observation, action, reward, next_observation, done))
             
@@ -379,15 +379,15 @@ else :
     with tf.Session() as sess:
        
         #Load a model if it exists
-        saver.restore(sess,"./models/model.ckpt")
+        #saver.restore(sess,"./models/model.ckpt")
         #print("Loaded model")
-        #sess.run(tf.global_variables_initializer())
+        sess.run(tf.global_variables_initializer())
        
         stacked_frames=deque([np.zeros((80,80),dtype=np.int) for i in range (stack_size)],maxlen=4)
         #Iinitialize the decay rate (that will use to reduce epsilon) 
         decay_step = 0
         runningTotal=0        
-        for episode in range(5000000):
+        for episode in range(5000):
             # Set step to 0
             step = 0
           
@@ -439,23 +439,22 @@ else :
                         # Get the total reward of the episode
                         total_reward = np.sum(episode_rewards)
                         runningTotal=runningTotal+total_reward  
-                        print('Episode: {},'.format(episode),
-                                      'Total reward: {},'.format(total_reward),
-                                      'Explore P: {:.4f},'.format(explore_probability),
+                        print('Episode: {}'.format(episode),
+                                      'Total reward: {}'.format(total_reward),
+                                      'Explore P: {:.4f}'.format(explore_probability),
                                       'Running Average: {}'.format(runningTotal/(episode+1)))
                                     #'Training Loss {:.4f}'.format(loss))
 
 
                         # Store transition <st,at,rt+1,st+1> in memory D
-                        next_observation = np.zeros(observation.shape)
-                        memory.add((observation, action, reward, next_observation, done))
+                        #memory.add((state, action, reward, next_state, done))
 
                     else:
                         # Stack the frame of the next_state
                         next_observation, stacked_frames = stack_frames(stacked_frames, next_observation, False)
                     
                         # Add experience to memory
-                        memory.add((observation, action, reward, next_observation, done))
+                        #memory.add((state, action, reward, next_state, done))
 
                         # st+1 is now our current state
                         observation = next_observation
@@ -507,7 +506,7 @@ else :
                                                DQN.target_Q: targets_mb,
                                                DQN.actions_: actions_mb})
 
-            print(loss, ",is the Loss")
+            print(loss,"LOSSY")
                                     # Write TF Summaries
             summary = sess.run(write_op, feed_dict={DQN.inputs_: states_mb,
                                                    DQN.target_Q: targets_mb,

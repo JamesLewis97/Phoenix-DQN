@@ -90,7 +90,7 @@ from skimage import transform# Help us to preprocess the frames
 from skimage import color
 from collections import deque# Ordered collection with ends
 import matplotlib.pyplot as plt # Display graphs
-
+from skimage.measure import block_reduce
 import warnings # This ignore all the warning messages that are normally printed during the training because of skiimage
 warnings.filterwarnings('ignore') 
 
@@ -217,17 +217,21 @@ possible_actions = np.array(np.identity(game.action_space.n,dtype=int).tolist())
 def preprocess_frame(frame):
     # Greyscale frame already done in our vizdoom config
     # x = np.mean(frame,-1)
+    gray=color.rgb2gray(frame) 
+    cropped_frame = gray[22:-28,:]
+    #print(cropped_frame.shape)
+    downscale=block_reduce(cropped_frame,block_size=(2,2),func=np.mean)
+    downscale[downscale<.1]=0
+    downscale[downscale>=.1]=255
     
-    # Crop the screen (remove the roof because it contains no information)
-    cropped_frame = frame[30:-10,30:-30]
-    cropped_frame=color.rgb2gray(cropped_frame) 
     # Normalize Pixel Values
-    normalized_frame = cropped_frame/255.0
+    #normalized_frame = cropped_frame/255.0
     
     # Resize
-    preprocessed_frame = transform.resize(normalized_frame, [84,84])
-    
-    return preprocessed_frame
+    #preprocessed_frame = transform.resize(normalized_frame, [84,84])
+    #plt.imshow(downscale,interpolation='nearest')
+    #plt.show()
+    return downscale
 
 
 # ### stack_frames
@@ -246,7 +250,6 @@ def preprocess_frame(frame):
 # - At each timestep, **we add the new frame to deque and then we stack them to form a new stacked frame**
 # - And so on
 # <img src="https://raw.githubusercontent.com/simoninithomas/Deep_reinforcement_learning_Course/master/DQN/Space%20Invaders/assets/stack_frames.png" alt="stack">
-# - If we're done, **we create a new stack with 4 new frames (because we are in a new episode)**.
 
 # In[5]:
 
@@ -254,15 +257,14 @@ def preprocess_frame(frame):
 stack_size = 4 # We stack 4 frames
 
 # Initialize deque with zero-images one array for each image
-stacked_frames  =  deque([np.zeros((84,84), dtype=np.int) for i in range(stack_size)], maxlen=4) 
+stacked_frames  =  deque([np.zeros((80,80), dtype=np.int) for i in range(stack_size)], maxlen=4) 
 
 def stack_frames(stacked_frames, state, is_new_episode):
     # Preprocess frame
     frame = preprocess_frame(state)
-    
     if is_new_episode:
         # Clear our stacked_frames
-        stacked_frames = deque([np.zeros((84,84), dtype=np.int) for i in range(stack_size)], maxlen=4)
+        stacked_frames = deque([np.zeros((80,80), dtype=np.int) for i in range(stack_size)], maxlen=4)
         
         # Because we're in a new episode, copy the same frame 4x
         stacked_frames.append(frame)
@@ -293,18 +295,18 @@ def stack_frames(stacked_frames, state, is_new_episode):
 
 
 ### MODEL HYPERPARAMETERS
-state_size = [84,84,4]      # Our input is a stack of 4 frames hence 84x84x4 (Width, height, channels) 
+state_size = [80,80,4]      # Our input is a stack of 4 frames hence 84x84x4 (Width, height, channels) 
 action_size = game.action_space.n              # 3 possible actions: left, right, shoot
 learning_rate =  0.0002      # Alpha (aka learning rate)
 
 ### TRAINING HYPERPARAMETERS
-total_episodes = 50000        # Total episodes for training
+total_episodes = 500000        # Total episodes for training
 max_steps = 50000              # Max possible steps in an episode
 batch_size = 64             
 
 # Exploration parameters for epsilon greedy strategy
 explore_start = 1.0            # exploration probability at start
-explore_stop = 0.01            # minimum exploration probability 
+explore_stop = 0.1            # minimum exploration probability 
 decay_rate = 0.00001            # exponential decay rate for exploration prob
 
 # Q learning hyperparameters
@@ -312,7 +314,7 @@ gamma = 0.95               # Discounting rate
 
 ### MEMORY HYPERPARAMETERS
 pretrain_length = batch_size*100   # Number of experiences stored in the Memory when initialized for the first time
-memory_size = 1000000          # Number of experiences the Memory can keep
+memory_size = 10000          # Number of experiences the Memory can keep
 
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
 training = True
@@ -343,7 +345,7 @@ class DQNetwork:
             # We create the placeholders
             # *state_size means that we take each elements of state_size in tuple hence is like if we wrote
             # [None, 84, 84, 4]
-            self.inputs_ = tf.placeholder(tf.float32, [None, 84,84,4], name="inputs")
+            self.inputs_ = tf.placeholder(tf.float32, [None, 80,80,4], name="inputs")
             self.actions_ = tf.placeholder(tf.float32, [None, 8], name="actions_")
             
             # Remember that target_Q is the R(s,a) + ymax Qhat(s', a')
@@ -357,7 +359,7 @@ class DQNetwork:
             """
             # Input is 84x84x4
             self.conv1 = tf.layers.conv2d(inputs = self.inputs_,
-                                         filters = 32,
+                                         filters = 16,
                                          kernel_size = [8,8],
                                          strides = [4,4],
                                          padding = "VALID",
@@ -380,7 +382,7 @@ class DQNetwork:
             ELU
             """
             self.conv2 = tf.layers.conv2d(inputs = self.conv1_out,
-                                 filters = 64,
+                                 filters = 32,
                                  kernel_size = [4,4],
                                  strides = [2,2],
                                  padding = "VALID",
@@ -402,25 +404,25 @@ class DQNetwork:
             BatchNormalization
             ELU
             """
-            self.conv3 = tf.layers.conv2d(inputs = self.conv2_out,
-                                 filters = 128,
-                                 kernel_size = [4,4],
-                                 strides = [2,2],
-                                 padding = "VALID",
-                                kernel_initializer=tf.contrib.layers.xavier_initializer_conv2d(),
-                                 name = "conv3")
-        
-            self.conv3_batchnorm = tf.layers.batch_normalization(self.conv3,
-                                                   training = True,
-                                                   epsilon = 1e-5,
-                                                     name = 'batch_norm3')
-
-            self.conv3_out = tf.nn.elu(self.conv3_batchnorm, name="conv3_out")
+            #self.conv3 = tf.layers.conv2d(inputs = self.conv2_out,
+            #                     filters = 128,
+            #                     kernel_size = [4,4],
+            #                     strides = [2,2],
+            #                     padding = "VALID",
+            #                    kernel_initializer=tf.contrib.layers.xavier_initializer_conv2d(),
+            #                     name = "conv3")
+            #
+            #self.conv3_batchnorm = tf.layers.batch_normalization(self.conv3,
+            #                                       training = True,
+            #                                       epsilon = 1e-5,
+            #                                         name = 'batch_norm3')
+            #
+            #self.conv3_out = tf.nn.elu(self.conv3_batchnorm, name="conv3_out")
             ## --> [3, 3, 128]
-            
-            
-            self.flatten = tf.layers.flatten(self.conv3_out)
-            ## --> [1152]
+            #
+            # 
+            self.flatten = tf.layers.flatten(self.conv2_out)
+            # --> [1152]
             
             
             self.fc = tf.layers.dense(inputs = self.flatten,
@@ -442,12 +444,31 @@ class DQNetwork:
             
             # The loss is the difference between our predicted Q_values and the Q_target
             # Sum(Qtarget - Q)^2
-            self.loss = tf.reduce_mean(tf.square(self.target_Q - self.Q))
+            
+            #self.loss = tf.reduce_mean(tf.square(self.target_Q - self.Q))
+            
+            self.loss = huberLossMean(self.Q,self.target_Q,1)
             
             self.optimizer = tf.train.RMSPropOptimizer(self.learning_rate).minimize(self.loss)
 
 
 # In[8]:
+
+
+def huberLoss ( true,pred,delta):
+    error=true-pred
+    cond = tf.keras.backend.abs(error)<delta
+    squared_loss=0.5*tf.keras.backend.square(error)
+    linear_loss=delta * (tf.keras.backend.abs(error)-0.5*delta)
+
+    return tf.where(cond,squared_loss,linear_loss)
+
+def huberLossMean(true,pred,delta):
+    return tf.keras.backend.sum(huberLoss(true,pred,delta))
+
+
+
+
 
 
 # Reset the graph
@@ -607,7 +628,7 @@ def predict_action(explore_start, explore_stop, decay_rate, decay_step, state, a
     else:
         # Get action from Q-network (exploitation)
         # Estimate the Qs values state
-        Qs = sess.run(DQNetwork.output, feed_dict = {DQNetwork.inputs_: state.reshape((1, 84,84,4))})
+        Qs = sess.run(DQNetwork.output, feed_dict = {DQNetwork.inputs_: state.reshape((1, 80,80,4))})
         
         # Take the biggest Q value (= the best action)
         choice = np.argmax(Qs)
@@ -671,7 +692,7 @@ if training == True:
                 # If the game is finished
                 if done:
                     # the episode ends so no next state
-                    next_state = np.zeros((84,84), dtype=np.int)
+                    next_state = game.reset()
                     next_state, stacked_frames = stack_frames(stacked_frames, next_state, False)
 
                     # Set step = max_steps to end the episode
@@ -773,7 +794,7 @@ with tf.Session() as sess:
             frame = game.get_state().screen_buffer
             state = stack_frames(stacked_frames, frame)
             # Take the biggest Q value (= the best action)
-            Qs = sess.run(DQNetwork.output, feed_dict = {DQNetwork.inputs_: state.reshape((1, 84,84,4))})
+            Qs = sess.run(DQNetwork.output, feed_dict = {DQNetwork.inputs_: state.reshape((1, 80,80,4))})
             action = np.argmax(Qs)
             action = possible_actions[int(action)]
             game.make_action(action)        

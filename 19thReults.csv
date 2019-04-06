@@ -1,0 +1,871 @@
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From ./huberLoss.py:43: conv2d (from tensorflow.python.layers.convolutional) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.conv2d instead.
+WARNING:tensorflow:From /home/james/.local/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/james/.local/lib/python2.7/site-packages/tensorflow/contrib/layers/python/layers/layers.py:1624: flatten (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+WARNING:tensorflow:From ./huberLoss.py:83: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+2019-03-19 16:20:36.531278: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3401000000 Hz
+2019-03-19 16:20:36.583784: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x7fffbef2e9d0 executing computations on platform Host. Devices:
+2019-03-19 16:20:36.583894: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+WARNING:tensorflow:From /home/james/.local/lib/python2.7/site-packages/tensorflow/python/training/saver.py:1266: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+Episode: 0, Total reward: 1560.0, Explore P: 0.1000, Running Average: 1560.0
+6480.516 ,is the Loss
+Model Saved
+Episode: 1, Total reward: 1130.0, Explore P: 0.1000, Running Average: 1345.0
+1827.7324 ,is the Loss
+Episode: 2, Total reward: 700.0, Explore P: 0.1000, Running Average: 1130.0
+4670.878 ,is the Loss
+Episode: 3, Total reward: 480.0, Explore P: 0.1000, Running Average: 967.5
+1972.702 ,is the Loss
+Episode: 4, Total reward: 320.0, Explore P: 0.1000, Running Average: 838.0
+2326.1328 ,is the Loss
+Episode: 5, Total reward: 480.0, Explore P: 0.1000, Running Average: 778.333333333
+1012.7728 ,is the Loss
+Model Saved
+Episode: 6, Total reward: 600.0, Explore P: 0.1000, Running Average: 752.857142857
+5346.868 ,is the Loss
+Episode: 7, Total reward: 2150.0, Explore P: 0.1000, Running Average: 927.5
+533.0328 ,is the Loss
+Episode: 8, Total reward: 440.0, Explore P: 0.1000, Running Average: 873.333333333
+294.63406 ,is the Loss
+Episode: 9, Total reward: 440.0, Explore P: 0.1000, Running Average: 830.0
+1246.6917 ,is the Loss
+Episode: 10, Total reward: 560.0, Explore P: 0.1000, Running Average: 805.454545455
+441.29706 ,is the Loss
+Model Saved
+Episode: 11, Total reward: 180.0, Explore P: 0.1000, Running Average: 753.333333333
+737.2135 ,is the Loss
+Episode: 12, Total reward: 180.0, Explore P: 0.1000, Running Average: 709.230769231
+572.8904 ,is the Loss
+Episode: 13, Total reward: 380.0, Explore P: 0.1000, Running Average: 685.714285714
+191.11002 ,is the Loss
+Episode: 14, Total reward: 140.0, Explore P: 0.1000, Running Average: 649.333333333
+1087.4297 ,is the Loss
+Episode: 15, Total reward: 420.0, Explore P: 0.1000, Running Average: 635.0
+664.2256 ,is the Loss
+Model Saved
+Episode: 16, Total reward: 1480.0, Explore P: 0.1000, Running Average: 684.705882353
+576.5828 ,is the Loss
+Episode: 17, Total reward: 1750.0, Explore P: 0.1000, Running Average: 743.888888889
+562.39404 ,is the Loss
+Episode: 18, Total reward: 950.0, Explore P: 0.1000, Running Average: 754.736842105
+2424.1018 ,is the Loss
+Episode: 19, Total reward: 640.0, Explore P: 0.1000, Running Average: 749.0
+1366.5696 ,is the Loss
+Episode: 20, Total reward: 260.0, Explore P: 0.1000, Running Average: 725.714285714
+942.7781 ,is the Loss
+Model Saved
+Episode: 21, Total reward: 460.0, Explore P: 0.1000, Running Average: 713.636363636
+3644.5735 ,is the Loss
+Episode: 22, Total reward: 2070.0, Explore P: 0.1000, Running Average: 772.608695652
+352.01035 ,is the Loss
+Episode: 23, Total reward: 820.0, Explore P: 0.1000, Running Average: 774.583333333
+612.0568 ,is the Loss
+Episode: 24, Total reward: 320.0, Explore P: 0.1000, Running Average: 756.4
+368.88278 ,is the Loss
+Episode: 25, Total reward: 200.0, Explore P: 0.1000, Running Average: 735.0
+2050.1133 ,is the Loss
+Model Saved
+Episode: 26, Total reward: 1040.0, Explore P: 0.1000, Running Average: 746.296296296
+716.02094 ,is the Loss
+Episode: 27, Total reward: 340.0, Explore P: 0.1000, Running Average: 731.785714286
+1042.4678 ,is the Loss
+Episode: 28, Total reward: 2730.0, Explore P: 0.1000, Running Average: 800.689655172
+654.6147 ,is the Loss
+Episode: 29, Total reward: 1240.0, Explore P: 0.1000, Running Average: 815.333333333
+3150.2883 ,is the Loss
+Episode: 30, Total reward: 580.0, Explore P: 0.1000, Running Average: 807.741935484
+365.89328 ,is the Loss
+Model Saved
+Episode: 31, Total reward: 1380.0, Explore P: 0.1000, Running Average: 825.625
+667.8315 ,is the Loss
+Episode: 32, Total reward: 540.0, Explore P: 0.1000, Running Average: 816.96969697
+658.7703 ,is the Loss
+Episode: 33, Total reward: 1090.0, Explore P: 0.1000, Running Average: 825.0
+2991.6208 ,is the Loss
+Episode: 34, Total reward: 2140.0, Explore P: 0.1000, Running Average: 862.571428571
+1089.7533 ,is the Loss
+Episode: 35, Total reward: 660.0, Explore P: 0.1000, Running Average: 856.944444444
+1394.8572 ,is the Loss
+Model Saved
+Episode: 36, Total reward: 200.0, Explore P: 0.1000, Running Average: 839.189189189
+834.6404 ,is the Loss
+Episode: 37, Total reward: 2520.0, Explore P: 0.1000, Running Average: 883.421052632
+3538.0215 ,is the Loss
+Episode: 38, Total reward: 260.0, Explore P: 0.1000, Running Average: 867.435897436
+2374.289 ,is the Loss
+Episode: 39, Total reward: 1470.0, Explore P: 0.1000, Running Average: 882.5
+2499.8125 ,is the Loss
+Episode: 40, Total reward: 1700.0, Explore P: 0.1000, Running Average: 902.43902439
+1211.9026 ,is the Loss
+Model Saved
+Episode: 41, Total reward: 1890.0, Explore P: 0.1000, Running Average: 925.952380952
+3499.4597 ,is the Loss
+Episode: 42, Total reward: 540.0, Explore P: 0.1000, Running Average: 916.976744186
+1861.164 ,is the Loss
+Episode: 43, Total reward: 460.0, Explore P: 0.1000, Running Average: 906.590909091
+4498.466 ,is the Loss
+Episode: 44, Total reward: 440.0, Explore P: 0.1000, Running Average: 896.222222222
+5139.076 ,is the Loss
+Episode: 45, Total reward: 340.0, Explore P: 0.1000, Running Average: 884.130434783
+525.7849 ,is the Loss
+Model Saved
+Episode: 46, Total reward: 600.0, Explore P: 0.1000, Running Average: 878.085106383
+3336.1418 ,is the Loss
+Episode: 47, Total reward: 1730.0, Explore P: 0.1000, Running Average: 895.833333333
+2537.1003 ,is the Loss
+Episode: 48, Total reward: 1760.0, Explore P: 0.1000, Running Average: 913.469387755
+2548.2222 ,is the Loss
+Episode: 49, Total reward: 360.0, Explore P: 0.1000, Running Average: 902.4
+3486.5234 ,is the Loss
+Episode: 50, Total reward: 460.0, Explore P: 0.1000, Running Average: 893.725490196
+5521.0435 ,is the Loss
+Model Saved
+Episode: 51, Total reward: 500.0, Explore P: 0.1000, Running Average: 886.153846154
+2036.8201 ,is the Loss
+Episode: 52, Total reward: 1120.0, Explore P: 0.1000, Running Average: 890.566037736
+7948.67 ,is the Loss
+Episode: 53, Total reward: 1570.0, Explore P: 0.1000, Running Average: 903.148148148
+8446.062 ,is the Loss
+Episode: 54, Total reward: 2590.0, Explore P: 0.1000, Running Average: 933.818181818
+5014.1997 ,is the Loss
+Episode: 55, Total reward: 600.0, Explore P: 0.1000, Running Average: 927.857142857
+5198.255 ,is the Loss
+Model Saved
+Episode: 56, Total reward: 1980.0, Explore P: 0.1000, Running Average: 946.315789474
+2635.7275 ,is the Loss
+Episode: 57, Total reward: 560.0, Explore P: 0.1000, Running Average: 939.655172414
+2250.6519 ,is the Loss
+Episode: 58, Total reward: 1420.0, Explore P: 0.1000, Running Average: 947.796610169
+1948.8456 ,is the Loss
+Episode: 59, Total reward: 1590.0, Explore P: 0.1000, Running Average: 958.5
+5035.58 ,is the Loss
+Episode: 60, Total reward: 400.0, Explore P: 0.1000, Running Average: 949.344262295
+6885.3364 ,is the Loss
+Model Saved
+Episode: 61, Total reward: 1170.0, Explore P: 0.1000, Running Average: 952.903225806
+3798.3057 ,is the Loss
+Episode: 62, Total reward: 520.0, Explore P: 0.1000, Running Average: 946.031746032
+3636.355 ,is the Loss
+Episode: 63, Total reward: 900.0, Explore P: 0.1000, Running Average: 945.3125
+2040.8889 ,is the Loss
+Episode: 64, Total reward: 2240.0, Explore P: 0.1000, Running Average: 965.230769231
+1136.7203 ,is the Loss
+Episode: 65, Total reward: 520.0, Explore P: 0.1000, Running Average: 958.484848485
+2771.5415 ,is the Loss
+Model Saved
+Episode: 66, Total reward: 1680.0, Explore P: 0.1000, Running Average: 969.253731343
+7031.967 ,is the Loss
+Episode: 67, Total reward: 1290.0, Explore P: 0.1000, Running Average: 973.970588235
+2394.7773 ,is the Loss
+Episode: 68, Total reward: 540.0, Explore P: 0.1000, Running Average: 967.68115942
+7289.8774 ,is the Loss
+Episode: 69, Total reward: 500.0, Explore P: 0.1000, Running Average: 961.0
+6568.9443 ,is the Loss
+Episode: 70, Total reward: 2000.0, Explore P: 0.1000, Running Average: 975.633802817
+3280.122 ,is the Loss
+Model Saved
+Episode: 71, Total reward: 1110.0, Explore P: 0.1000, Running Average: 977.5
+5671.237 ,is the Loss
+Episode: 72, Total reward: 380.0, Explore P: 0.1000, Running Average: 969.315068493
+4872.613 ,is the Loss
+Episode: 73, Total reward: 930.0, Explore P: 0.1000, Running Average: 968.783783784
+3112.0254 ,is the Loss
+Episode: 74, Total reward: 640.0, Explore P: 0.1000, Running Average: 964.4
+2616.2544 ,is the Loss
+Episode: 75, Total reward: 660.0, Explore P: 0.1000, Running Average: 960.394736842
+4499.941 ,is the Loss
+Model Saved
+Episode: 76, Total reward: 740.0, Explore P: 0.1000, Running Average: 957.532467532
+4563.922 ,is the Loss
+Episode: 77, Total reward: 1930.0, Explore P: 0.1000, Running Average: 970.0
+3238.9426 ,is the Loss
+Episode: 78, Total reward: 880.0, Explore P: 0.1000, Running Average: 968.860759494
+4411.622 ,is the Loss
+Episode: 79, Total reward: 480.0, Explore P: 0.1000, Running Average: 962.75
+787.27405 ,is the Loss
+Episode: 80, Total reward: 1090.0, Explore P: 0.1000, Running Average: 964.320987654
+3057.079 ,is the Loss
+Model Saved
+Episode: 81, Total reward: 2890.0, Explore P: 0.1000, Running Average: 987.804878049
+1875.3767 ,is the Loss
+Episode: 82, Total reward: 500.0, Explore P: 0.1000, Running Average: 981.927710843
+4912.4424 ,is the Loss
+Episode: 83, Total reward: 1180.0, Explore P: 0.1000, Running Average: 984.285714286
+3201.4226 ,is the Loss
+Episode: 84, Total reward: 560.0, Explore P: 0.1000, Running Average: 979.294117647
+4122.823 ,is the Loss
+Episode: 85, Total reward: 520.0, Explore P: 0.1000, Running Average: 973.953488372
+2302.4312 ,is the Loss
+Model Saved
+Episode: 86, Total reward: 500.0, Explore P: 0.1000, Running Average: 968.505747126
+1787.2137 ,is the Loss
+Episode: 87, Total reward: 440.0, Explore P: 0.1000, Running Average: 962.5
+874.6654 ,is the Loss
+Episode: 88, Total reward: 660.0, Explore P: 0.1000, Running Average: 959.101123596
+3899.3604 ,is the Loss
+Episode: 89, Total reward: 640.0, Explore P: 0.1000, Running Average: 955.555555556
+2733.659 ,is the Loss
+Episode: 90, Total reward: 700.0, Explore P: 0.1000, Running Average: 952.747252747
+2917.5486 ,is the Loss
+Model Saved
+Episode: 91, Total reward: 640.0, Explore P: 0.1000, Running Average: 949.347826087
+1958.2842 ,is the Loss
+Episode: 92, Total reward: 480.0, Explore P: 0.1000, Running Average: 944.301075269
+4777.5576 ,is the Loss
+Episode: 93, Total reward: 620.0, Explore P: 0.1000, Running Average: 940.85106383
+4137.11 ,is the Loss
+Episode: 94, Total reward: 360.0, Explore P: 0.1000, Running Average: 934.736842105
+913.2154 ,is the Loss
+Episode: 95, Total reward: 640.0, Explore P: 0.1000, Running Average: 931.666666667
+2089.2673 ,is the Loss
+Model Saved
+Episode: 96, Total reward: 440.0, Explore P: 0.1000, Running Average: 926.597938144
+1707.1602 ,is the Loss
+Episode: 97, Total reward: 480.0, Explore P: 0.1000, Running Average: 922.040816327
+1250.1976 ,is the Loss
+Episode: 98, Total reward: 1570.0, Explore P: 0.1000, Running Average: 928.585858586
+2813.831 ,is the Loss
+Episode: 99, Total reward: 620.0, Explore P: 0.1000, Running Average: 925.5
+1213.7272 ,is the Loss
+Episode: 100, Total reward: 1630.0, Explore P: 0.1000, Running Average: 932.475247525
+563.9772 ,is the Loss
+Model Saved
+Episode: 101, Total reward: 580.0, Explore P: 0.1000, Running Average: 929.019607843
+2210.7056 ,is the Loss
+Episode: 102, Total reward: 620.0, Explore P: 0.1000, Running Average: 926.019417476
+3078.1836 ,is the Loss
+Episode: 103, Total reward: 440.0, Explore P: 0.1000, Running Average: 921.346153846
+2327.5195 ,is the Loss
+Episode: 104, Total reward: 480.0, Explore P: 0.1000, Running Average: 917.142857143
+862.75635 ,is the Loss
+Episode: 105, Total reward: 380.0, Explore P: 0.1000, Running Average: 912.075471698
+2142.416 ,is the Loss
+Model Saved
+Episode: 106, Total reward: 500.0, Explore P: 0.1000, Running Average: 908.224299065
+1214.874 ,is the Loss
+Episode: 107, Total reward: 3330.0, Explore P: 0.1000, Running Average: 930.648148148
+1738.8462 ,is the Loss
+Episode: 108, Total reward: 1190.0, Explore P: 0.1000, Running Average: 933.027522936
+740.7715 ,is the Loss
+Episode: 109, Total reward: 500.0, Explore P: 0.1000, Running Average: 929.090909091
+1424.7784 ,is the Loss
+Episode: 110, Total reward: 420.0, Explore P: 0.1000, Running Average: 924.504504505
+2809.6704 ,is the Loss
+Model Saved
+Episode: 111, Total reward: 340.0, Explore P: 0.1000, Running Average: 919.285714286
+1338.9905 ,is the Loss
+Episode: 112, Total reward: 1880.0, Explore P: 0.1000, Running Average: 927.787610619
+952.7184 ,is the Loss
+Episode: 113, Total reward: 380.0, Explore P: 0.1000, Running Average: 922.98245614
+1686.5059 ,is the Loss
+Episode: 114, Total reward: 480.0, Explore P: 0.1000, Running Average: 919.130434783
+2548.7703 ,is the Loss
+Episode: 115, Total reward: 1970.0, Explore P: 0.1000, Running Average: 928.189655172
+2825.2747 ,is the Loss
+Model Saved
+Episode: 116, Total reward: 440.0, Explore P: 0.1000, Running Average: 924.017094017
+3613.278 ,is the Loss
+Episode: 117, Total reward: 540.0, Explore P: 0.1000, Running Average: 920.762711864
+1649.3462 ,is the Loss
+Episode: 118, Total reward: 420.0, Explore P: 0.1000, Running Average: 916.554621849
+1388.1152 ,is the Loss
+Episode: 119, Total reward: 340.0, Explore P: 0.1000, Running Average: 911.75
+614.712 ,is the Loss
+Episode: 120, Total reward: 2720.0, Explore P: 0.1000, Running Average: 926.694214876
+4335.499 ,is the Loss
+Model Saved
+Episode: 121, Total reward: 2070.0, Explore P: 0.1000, Running Average: 936.06557377
+6837.6743 ,is the Loss
+Episode: 122, Total reward: 2340.0, Explore P: 0.1000, Running Average: 947.479674797
+2900.197 ,is the Loss
+Episode: 123, Total reward: 420.0, Explore P: 0.1000, Running Average: 943.225806452
+3124.6914 ,is the Loss
+Episode: 124, Total reward: 740.0, Explore P: 0.1000, Running Average: 941.6
+1979.0873 ,is the Loss
+Episode: 125, Total reward: 1300.0, Explore P: 0.1000, Running Average: 944.444444444
+1774.1625 ,is the Loss
+Model Saved
+Episode: 126, Total reward: 200.0, Explore P: 0.1000, Running Average: 938.582677165
+1737.7256 ,is the Loss
+Episode: 127, Total reward: 1120.0, Explore P: 0.1000, Running Average: 940.0
+1475.4604 ,is the Loss
+Episode: 128, Total reward: 2790.0, Explore P: 0.1000, Running Average: 954.341085271
+1476.0878 ,is the Loss
+Episode: 129, Total reward: 500.0, Explore P: 0.1000, Running Average: 950.846153846
+3638.7178 ,is the Loss
+Episode: 130, Total reward: 440.0, Explore P: 0.1000, Running Average: 946.946564885
+1662.8428 ,is the Loss
+Model Saved
+Episode: 131, Total reward: 520.0, Explore P: 0.1000, Running Average: 943.712121212
+6385.8613 ,is the Loss
+Episode: 132, Total reward: 420.0, Explore P: 0.1000, Running Average: 939.77443609
+5000.4805 ,is the Loss
+Episode: 133, Total reward: 3240.0, Explore P: 0.1000, Running Average: 956.940298507
+3348.1804 ,is the Loss
+Episode: 134, Total reward: 640.0, Explore P: 0.1000, Running Average: 954.592592593
+3076.4617 ,is the Loss
+Episode: 135, Total reward: 260.0, Explore P: 0.1000, Running Average: 949.485294118
+1337.2554 ,is the Loss
+Model Saved
+Episode: 136, Total reward: 1700.0, Explore P: 0.1000, Running Average: 954.96350365
+917.5477 ,is the Loss
+Episode: 137, Total reward: 420.0, Explore P: 0.1000, Running Average: 951.086956522
+440.80835 ,is the Loss
+Episode: 138, Total reward: 460.0, Explore P: 0.1000, Running Average: 947.553956835
+8857.018 ,is the Loss
+Episode: 139, Total reward: 700.0, Explore P: 0.1000, Running Average: 945.785714286
+1099.4027 ,is the Loss
+Episode: 140, Total reward: 830.0, Explore P: 0.1000, Running Average: 944.964539007
+1387.8469 ,is the Loss
+Model Saved
+Episode: 141, Total reward: 1910.0, Explore P: 0.1000, Running Average: 951.76056338
+1399.7726 ,is the Loss
+Episode: 142, Total reward: 1320.0, Explore P: 0.1000, Running Average: 954.335664336
+919.8582 ,is the Loss
+Episode: 143, Total reward: 660.0, Explore P: 0.1000, Running Average: 952.291666667
+2335.7305 ,is the Loss
+Episode: 144, Total reward: 460.0, Explore P: 0.1000, Running Average: 948.896551724
+1475.0935 ,is the Loss
+Episode: 145, Total reward: 1820.0, Explore P: 0.1000, Running Average: 954.863013699
+825.2016 ,is the Loss
+Model Saved
+Episode: 146, Total reward: 460.0, Explore P: 0.1000, Running Average: 951.496598639
+1387.1958 ,is the Loss
+Episode: 147, Total reward: 420.0, Explore P: 0.1000, Running Average: 947.905405405
+354.2061 ,is the Loss
+Episode: 148, Total reward: 380.0, Explore P: 0.1000, Running Average: 944.093959732
+920.9651 ,is the Loss
+Episode: 149, Total reward: 1160.0, Explore P: 0.1000, Running Average: 945.533333333
+3388.8032 ,is the Loss
+Episode: 150, Total reward: 1290.0, Explore P: 0.1000, Running Average: 947.814569536
+1038.6105 ,is the Loss
+Model Saved
+Episode: 151, Total reward: 400.0, Explore P: 0.1000, Running Average: 944.210526316
+2700.0881 ,is the Loss
+Episode: 152, Total reward: 440.0, Explore P: 0.1000, Running Average: 940.91503268
+786.5776 ,is the Loss
+Episode: 153, Total reward: 540.0, Explore P: 0.1000, Running Average: 938.311688312
+1095.6914 ,is the Loss
+Episode: 154, Total reward: 680.0, Explore P: 0.1000, Running Average: 936.64516129
+2861.191 ,is the Loss
+Episode: 155, Total reward: 200.0, Explore P: 0.1000, Running Average: 931.923076923
+3024.0688 ,is the Loss
+Model Saved
+Episode: 156, Total reward: 600.0, Explore P: 0.1000, Running Average: 929.808917197
+3449.2363 ,is the Loss
+Episode: 157, Total reward: 1660.0, Explore P: 0.1000, Running Average: 934.430379747
+2936.6946 ,is the Loss
+Episode: 158, Total reward: 220.0, Explore P: 0.1000, Running Average: 929.937106918
+1512.143 ,is the Loss
+Episode: 159, Total reward: 1850.0, Explore P: 0.1000, Running Average: 935.6875
+999.4254 ,is the Loss
+Episode: 160, Total reward: 1820.0, Explore P: 0.1000, Running Average: 941.180124224
+1564.1704 ,is the Loss
+Model Saved
+Episode: 161, Total reward: 2160.0, Explore P: 0.1000, Running Average: 948.703703704
+1386.8137 ,is the Loss
+Episode: 162, Total reward: 500.0, Explore P: 0.1000, Running Average: 945.950920245
+3761.08 ,is the Loss
+Episode: 163, Total reward: 1840.0, Explore P: 0.1000, Running Average: 951.402439024
+1986.5948 ,is the Loss
+Episode: 164, Total reward: 1290.0, Explore P: 0.1000, Running Average: 953.454545455
+2112.058 ,is the Loss
+Episode: 165, Total reward: 460.0, Explore P: 0.1000, Running Average: 950.481927711
+4927.8857 ,is the Loss
+Model Saved
+Episode: 166, Total reward: 320.0, Explore P: 0.1000, Running Average: 946.706586826
+3549.6484 ,is the Loss
+Episode: 167, Total reward: 3640.0, Explore P: 0.1000, Running Average: 962.738095238
+1561.8693 ,is the Loss
+Episode: 168, Total reward: 2340.0, Explore P: 0.1000, Running Average: 970.887573964
+1349.2009 ,is the Loss
+Episode: 169, Total reward: 400.0, Explore P: 0.1000, Running Average: 967.529411765
+6098.2036 ,is the Loss
+Episode: 170, Total reward: 1090.0, Explore P: 0.1000, Running Average: 968.245614035
+5698.455 ,is the Loss
+Model Saved
+Episode: 171, Total reward: 540.0, Explore P: 0.1000, Running Average: 965.755813953
+2287.3132 ,is the Loss
+Episode: 172, Total reward: 820.0, Explore P: 0.1000, Running Average: 964.913294798
+1986.624 ,is the Loss
+Episode: 173, Total reward: 1510.0, Explore P: 0.1000, Running Average: 968.045977011
+706.965 ,is the Loss
+Episode: 174, Total reward: 500.0, Explore P: 0.1000, Running Average: 965.371428571
+2661.0374 ,is the Loss
+Episode: 175, Total reward: 1350.0, Explore P: 0.1000, Running Average: 967.556818182
+5049.3857 ,is the Loss
+Model Saved
+Episode: 176, Total reward: 620.0, Explore P: 0.1000, Running Average: 965.593220339
+1987.5806 ,is the Loss
+Episode: 177, Total reward: 1830.0, Explore P: 0.1000, Running Average: 970.449438202
+3906.5393 ,is the Loss
+Episode: 178, Total reward: 260.0, Explore P: 0.1000, Running Average: 966.480446927
+1091.6954 ,is the Loss
+Episode: 179, Total reward: 930.0, Explore P: 0.1000, Running Average: 966.277777778
+2824.62 ,is the Loss
+Episode: 180, Total reward: 680.0, Explore P: 0.1000, Running Average: 964.696132597
+1989.6107 ,is the Loss
+Model Saved
+Episode: 181, Total reward: 500.0, Explore P: 0.1000, Running Average: 962.142857143
+1862.3784 ,is the Loss
+Episode: 182, Total reward: 540.0, Explore P: 0.1000, Running Average: 959.836065574
+1002.09436 ,is the Loss
+Episode: 183, Total reward: 960.0, Explore P: 0.1000, Running Average: 959.836956522
+1212.1841 ,is the Loss
+Episode: 184, Total reward: 200.0, Explore P: 0.1000, Running Average: 955.72972973
+825.18195 ,is the Loss
+Episode: 185, Total reward: 260.0, Explore P: 0.1000, Running Average: 951.989247312
+1340.0513 ,is the Loss
+Model Saved
+Episode: 186, Total reward: 970.0, Explore P: 0.1000, Running Average: 952.085561497
+2422.7334 ,is the Loss
+Episode: 187, Total reward: 620.0, Explore P: 0.1000, Running Average: 950.319148936
+1213.0338 ,is the Loss
+Episode: 188, Total reward: 2280.0, Explore P: 0.1000, Running Average: 957.354497354
+1476.1235 ,is the Loss
+Episode: 189, Total reward: 760.0, Explore P: 0.1000, Running Average: 956.315789474
+1512.105 ,is the Loss
+Episode: 190, Total reward: 1140.0, Explore P: 0.1000, Running Average: 957.277486911
+1686.6552 ,is the Loss
+Model Saved
+Episode: 191, Total reward: 740.0, Explore P: 0.1000, Running Average: 956.145833333
+565.8824 ,is the Loss
+Episode: 192, Total reward: 1550.0, Explore P: 0.1000, Running Average: 959.222797927
+829.15405 ,is the Loss
+Episode: 193, Total reward: 1250.0, Explore P: 0.1000, Running Average: 960.721649485
+1399.258 ,is the Loss
+Episode: 194, Total reward: 520.0, Explore P: 0.1000, Running Average: 958.461538462
+999.4868 ,is the Loss
+Episode: 195, Total reward: 1110.0, Explore P: 0.1000, Running Average: 959.234693878
+949.8864 ,is the Loss
+Model Saved
+Episode: 196, Total reward: 400.0, Explore P: 0.1000, Running Average: 956.395939086
+2174.9307 ,is the Loss
+Episode: 197, Total reward: 540.0, Explore P: 0.1000, Running Average: 954.292929293
+1601.4309 ,is the Loss
+Episode: 198, Total reward: 540.0, Explore P: 0.1000, Running Average: 952.211055276
+2074.584 ,is the Loss
+Episode: 199, Total reward: 520.0, Explore P: 0.1000, Running Average: 950.05
+350.94348 ,is the Loss
+Episode: 200, Total reward: 500.0, Explore P: 0.1000, Running Average: 947.810945274
+2224.773 ,is the Loss
+Model Saved
+Episode: 201, Total reward: 1880.0, Explore P: 0.1000, Running Average: 952.425742574
+1124.7544 ,is the Loss
+Episode: 202, Total reward: 480.0, Explore P: 0.1000, Running Average: 950.098522167
+1513.1377 ,is the Loss
+Episode: 203, Total reward: 540.0, Explore P: 0.1000, Running Average: 948.088235294
+701.15454 ,is the Loss
+Episode: 204, Total reward: 2150.0, Explore P: 0.1000, Running Average: 953.951219512
+739.3455 ,is the Loss
+Episode: 205, Total reward: 400.0, Explore P: 0.1000, Running Average: 951.262135922
+786.52844 ,is the Loss
+Model Saved
+Episode: 206, Total reward: 2000.0, Explore P: 0.1000, Running Average: 956.328502415
+4062.808 ,is the Loss
+Episode: 207, Total reward: 540.0, Explore P: 0.1000, Running Average: 954.326923077
+825.239 ,is the Loss
+Episode: 208, Total reward: 920.0, Explore P: 0.1000, Running Average: 954.162679426
+5639.414 ,is the Loss
+Episode: 209, Total reward: 540.0, Explore P: 0.1000, Running Average: 952.19047619
+4073.3206 ,is the Loss
+Episode: 210, Total reward: 1120.0, Explore P: 0.1000, Running Average: 952.985781991
+1562.4752 ,is the Loss
+Model Saved
+Episode: 211, Total reward: 460.0, Explore P: 0.1000, Running Average: 950.660377358
+1599.4231 ,is the Loss
+Episode: 212, Total reward: 1610.0, Explore P: 0.1000, Running Average: 953.755868545
+832.9681 ,is the Loss
+Episode: 213, Total reward: 560.0, Explore P: 0.1000, Running Average: 951.91588785
+1600.5956 ,is the Loss
+Episode: 214, Total reward: 400.0, Explore P: 0.1000, Running Average: 949.348837209
+1774.7509 ,is the Loss
+Episode: 215, Total reward: 1270.0, Explore P: 0.1000, Running Average: 950.833333333
+1304.0941 ,is the Loss
+Model Saved
+Episode: 216, Total reward: 520.0, Explore P: 0.1000, Running Average: 948.847926267
+6226.496 ,is the Loss
+Episode: 217, Total reward: 1130.0, Explore P: 0.1000, Running Average: 949.678899083
+2810.0825 ,is the Loss
+Episode: 218, Total reward: 2830.0, Explore P: 0.1000, Running Average: 958.264840183
+7139.0146 ,is the Loss
+Episode: 219, Total reward: 260.0, Explore P: 0.1000, Running Average: 955.090909091
+1089.0015 ,is the Loss
+Episode: 220, Total reward: 360.0, Explore P: 0.1000, Running Average: 952.398190045
+1911.9384 ,is the Loss
+Model Saved
+Episode: 221, Total reward: 400.0, Explore P: 0.1000, Running Average: 949.90990991
+3924.3179 ,is the Loss
+Episode: 222, Total reward: 580.0, Explore P: 0.1000, Running Average: 948.251121076
+2249.8884 ,is the Loss
+Episode: 223, Total reward: 400.0, Explore P: 0.1000, Running Average: 945.803571429
+1478.1832 ,is the Loss
+Episode: 224, Total reward: 720.0, Explore P: 0.1000, Running Average: 944.8
+2787.5698 ,is the Loss
+Episode: 225, Total reward: 460.0, Explore P: 0.1000, Running Average: 942.654867257
+2685.7256 ,is the Loss
+Model Saved
+Episode: 226, Total reward: 880.0, Explore P: 0.1000, Running Average: 942.378854626
+4497.003 ,is the Loss
+Episode: 227, Total reward: 860.0, Explore P: 0.1000, Running Average: 942.01754386
+2596.8208 ,is the Loss
+Episode: 228, Total reward: 440.0, Explore P: 0.1000, Running Average: 939.825327511
+3586.5264 ,is the Loss
+Episode: 229, Total reward: 480.0, Explore P: 0.1000, Running Average: 937.826086957
+1087.0564 ,is the Loss
+Episode: 230, Total reward: 600.0, Explore P: 0.1000, Running Average: 936.363636364
+1563.4471 ,is the Loss
+Model Saved
+Episode: 231, Total reward: 1010.0, Explore P: 0.1000, Running Average: 936.681034483
+1561.0167 ,is the Loss
+Episode: 232, Total reward: 260.0, Explore P: 0.1000, Running Average: 933.776824034
+3387.1323 ,is the Loss
+Episode: 233, Total reward: 1210.0, Explore P: 0.1000, Running Average: 934.957264957
+1264.6008 ,is the Loss
+Episode: 234, Total reward: 440.0, Explore P: 0.1000, Running Average: 932.85106383
+737.8732 ,is the Loss
+Episode: 235, Total reward: 420.0, Explore P: 0.1000, Running Average: 930.677966102
+3236.5513 ,is the Loss
+Model Saved
+Episode: 236, Total reward: 920.0, Explore P: 0.1000, Running Average: 930.632911392
+912.51263 ,is the Loss
+Episode: 237, Total reward: 340.0, Explore P: 0.1000, Running Average: 928.151260504
+2074.4058 ,is the Loss
+Episode: 238, Total reward: 460.0, Explore P: 0.1000, Running Average: 926.192468619
+915.4436 ,is the Loss
+Episode: 239, Total reward: 540.0, Explore P: 0.1000, Running Average: 924.583333333
+1775.6285 ,is the Loss
+Episode: 240, Total reward: 500.0, Explore P: 0.1000, Running Average: 922.821576763
+2163.8152 ,is the Loss
+Model Saved
+Episode: 241, Total reward: 810.0, Explore P: 0.1000, Running Average: 922.355371901
+2024.6572 ,is the Loss
+Episode: 242, Total reward: 460.0, Explore P: 0.1000, Running Average: 920.452674897
+912.593 ,is the Loss
+Episode: 243, Total reward: 480.0, Explore P: 0.1000, Running Average: 918.647540984
+951.1166 ,is the Loss
+Episode: 244, Total reward: 1830.0, Explore P: 0.1000, Running Average: 922.367346939
+3311.9966 ,is the Loss
+Episode: 245, Total reward: 560.0, Explore P: 0.1000, Running Average: 920.894308943
+911.92535 ,is the Loss
+Model Saved
+Episode: 246, Total reward: 480.0, Explore P: 0.1000, Running Average: 919.109311741
+2374.269 ,is the Loss
+Episode: 247, Total reward: 540.0, Explore P: 0.1000, Running Average: 917.580645161
+1699.2598 ,is the Loss
+Episode: 248, Total reward: 1130.0, Explore P: 0.1000, Running Average: 918.43373494
+1599.6914 ,is the Loss
+Episode: 249, Total reward: 1880.0, Explore P: 0.1000, Running Average: 922.28
+1087.8733 ,is the Loss
+Episode: 250, Total reward: 860.0, Explore P: 0.1000, Running Average: 922.03187251
+3013.811 ,is the Loss
+Model Saved
+Episode: 251, Total reward: 1310.0, Explore P: 0.1000, Running Average: 923.571428571
+2561.0034 ,is the Loss
+Episode: 252, Total reward: 1360.0, Explore P: 0.1000, Running Average: 925.296442688
+2489.8704 ,is the Loss
+Episode: 253, Total reward: 1780.0, Explore P: 0.1000, Running Average: 928.661417323
+354.52863 ,is the Loss
+Episode: 254, Total reward: 1350.0, Explore P: 0.1000, Running Average: 930.31372549
+1128.6548 ,is the Loss
+Episode: 255, Total reward: 400.0, Explore P: 0.1000, Running Average: 928.2421875
+527.64264 ,is the Loss
+Model Saved
+Episode: 256, Total reward: 580.0, Explore P: 0.1000, Running Average: 926.887159533
+262.5883 ,is the Loss
+Episode: 257, Total reward: 720.0, Explore P: 0.1000, Running Average: 926.085271318
+4187.576 ,is the Loss
+Episode: 258, Total reward: 660.0, Explore P: 0.1000, Running Average: 925.057915058
+2177.646 ,is the Loss
+Episode: 259, Total reward: 540.0, Explore P: 0.1000, Running Average: 923.576923077
+999.6702 ,is the Loss
+Episode: 260, Total reward: 1060.0, Explore P: 0.1000, Running Average: 924.099616858
+2874.596 ,is the Loss
+Model Saved
+Episode: 261, Total reward: 480.0, Explore P: 0.1000, Running Average: 922.404580153
+1087.2097 ,is the Loss
+Episode: 262, Total reward: 380.0, Explore P: 0.1000, Running Average: 920.342205323
+1861.2505 ,is the Loss
+Episode: 263, Total reward: 420.0, Explore P: 0.1000, Running Average: 918.446969697
+1688.6434 ,is the Loss
+Episode: 264, Total reward: 1160.0, Explore P: 0.1000, Running Average: 919.358490566
+1599.3246 ,is the Loss
+Episode: 265, Total reward: 360.0, Explore P: 0.1000, Running Average: 917.255639098
+2086.5112 ,is the Loss
+Model Saved
+Episode: 266, Total reward: 380.0, Explore P: 0.1000, Running Average: 915.243445693
+1612.5217 ,is the Loss
+Episode: 267, Total reward: 1510.0, Explore P: 0.1000, Running Average: 917.462686567
+2598.328 ,is the Loss
+Episode: 268, Total reward: 1660.0, Explore P: 0.1000, Running Average: 920.223048327
+2923.9246 ,is the Loss
+Episode: 269, Total reward: 1390.0, Explore P: 0.1000, Running Average: 921.962962963
+1086.648 ,is the Loss
+Episode: 270, Total reward: 540.0, Explore P: 0.1000, Running Average: 920.553505535
+837.8262 ,is the Loss
+Model Saved
+Episode: 271, Total reward: 500.0, Explore P: 0.1000, Running Average: 919.007352941
+3561.651 ,is the Loss
+Episode: 272, Total reward: 440.0, Explore P: 0.1000, Running Average: 917.252747253
+3474.5393 ,is the Loss
+Episode: 273, Total reward: 1590.0, Explore P: 0.1000, Running Average: 919.708029197
+2896.9937 ,is the Loss
+Episode: 274, Total reward: 1300.0, Explore P: 0.1000, Running Average: 921.090909091
+2849.307 ,is the Loss
+Episode: 275, Total reward: 1520.0, Explore P: 0.1000, Running Average: 923.260869565
+2248.28 ,is the Loss
+Model Saved
+Episode: 276, Total reward: 3330.0, Explore P: 0.1000, Running Average: 931.949458484
+6859.8115 ,is the Loss
+Episode: 277, Total reward: 1660.0, Explore P: 0.1000, Running Average: 934.568345324
+5618.922 ,is the Loss
+Episode: 278, Total reward: 600.0, Explore P: 0.1000, Running Average: 933.369175627
+1950.5159 ,is the Loss
+Episode: 279, Total reward: 380.0, Explore P: 0.1000, Running Average: 931.392857143
+830.1146 ,is the Loss
+Episode: 280, Total reward: 420.0, Explore P: 0.1000, Running Average: 929.572953737
+3174.2034 ,is the Loss
+Model Saved
+Episode: 281, Total reward: 980.0, Explore P: 0.1000, Running Average: 929.75177305
+1986.7238 ,is the Loss
+Episode: 282, Total reward: 460.0, Explore P: 0.1000, Running Average: 928.091872792
+2728.0488 ,is the Loss
+Episode: 283, Total reward: 820.0, Explore P: 0.1000, Running Average: 927.711267606
+2787.5527 ,is the Loss
+Episode: 284, Total reward: 1540.0, Explore P: 0.1000, Running Average: 929.859649123
+4701.7817 ,is the Loss
+Episode: 285, Total reward: 1230.0, Explore P: 0.1000, Running Average: 930.909090909
+4485.464 ,is the Loss
+Model Saved
+Episode: 286, Total reward: 420.0, Explore P: 0.1000, Running Average: 929.128919861
+3598.2368 ,is the Loss
+Episode: 287, Total reward: 1310.0, Explore P: 0.1000, Running Average: 930.451388889
+787.1438 ,is the Loss
+Episode: 288, Total reward: 260.0, Explore P: 0.1000, Running Average: 928.131487889
+3484.1348 ,is the Loss
+Episode: 289, Total reward: 1870.0, Explore P: 0.1000, Running Average: 931.379310345
+2667.6277 ,is the Loss
+Episode: 290, Total reward: 1480.0, Explore P: 0.1000, Running Average: 933.264604811
+1609.8044 ,is the Loss
+Model Saved
+Episode: 291, Total reward: 1520.0, Explore P: 0.1000, Running Average: 935.273972603
+2514.52 ,is the Loss
+Episode: 292, Total reward: 380.0, Explore P: 0.1000, Running Average: 933.37883959
+4109.7485 ,is the Loss
+Episode: 293, Total reward: 1310.0, Explore P: 0.1000, Running Average: 934.659863946
+9224.163 ,is the Loss
+Episode: 294, Total reward: 600.0, Explore P: 0.1000, Running Average: 933.525423729
+4748.007 ,is the Loss
+Episode: 295, Total reward: 480.0, Explore P: 0.1000, Running Average: 931.993243243
+1865.8859 ,is the Loss
+Model Saved
+Episode: 296, Total reward: 620.0, Explore P: 0.1000, Running Average: 930.942760943
+3150.6003 ,is the Loss
+Episode: 297, Total reward: 1300.0, Explore P: 0.1000, Running Average: 932.181208054
+4211.981 ,is the Loss
+Episode: 298, Total reward: 400.0, Explore P: 0.1000, Running Average: 930.401337793
+3935.391 ,is the Loss
+Episode: 299, Total reward: 1440.0, Explore P: 0.1000, Running Average: 932.1
+4970.9375 ,is the Loss
+Episode: 300, Total reward: 900.0, Explore P: 0.1000, Running Average: 931.993355482
+3584.212 ,is the Loss
+Model Saved
+Episode: 301, Total reward: 780.0, Explore P: 0.1000, Running Average: 931.490066225
+3549.9868 ,is the Loss
+Episode: 302, Total reward: 1630.0, Explore P: 0.1000, Running Average: 933.795379538
+3162.9668 ,is the Loss
+Episode: 303, Total reward: 2300.0, Explore P: 0.1000, Running Average: 938.289473684
+3032.6917 ,is the Loss
+Episode: 304, Total reward: 620.0, Explore P: 0.1000, Running Average: 937.245901639
+3784.2744 ,is the Loss
+Episode: 305, Total reward: 480.0, Explore P: 0.1000, Running Average: 935.751633987
+3411.4648 ,is the Loss
+Model Saved
+Episode: 306, Total reward: 640.0, Explore P: 0.1000, Running Average: 934.788273616
+5184.701 ,is the Loss
+Episode: 307, Total reward: 400.0, Explore P: 0.1000, Running Average: 933.051948052
+2298.4363 ,is the Loss
+Episode: 308, Total reward: 440.0, Explore P: 0.1000, Running Average: 931.45631068
+3536.5269 ,is the Loss
+Episode: 309, Total reward: 460.0, Explore P: 0.1000, Running Average: 929.935483871
+3225.0398 ,is the Loss
+Episode: 310, Total reward: 560.0, Explore P: 0.1000, Running Average: 928.745980707
+3318.959 ,is the Loss
+Model Saved
+Episode: 311, Total reward: 500.0, Explore P: 0.1000, Running Average: 927.371794872
+1212.9541 ,is the Loss
+Episode: 312, Total reward: 620.0, Explore P: 0.1000, Running Average: 926.389776358
+4286.2134 ,is the Loss
+Episode: 313, Total reward: 1560.0, Explore P: 0.1000, Running Average: 928.407643312
+3122.601 ,is the Loss
+Episode: 314, Total reward: 880.0, Explore P: 0.1000, Running Average: 928.253968254
+4711.331 ,is the Loss
+Episode: 315, Total reward: 2890.0, Explore P: 0.1000, Running Average: 934.462025316
+3550.1943 ,is the Loss
+Model Saved
+Episode: 316, Total reward: 600.0, Explore P: 0.1000, Running Average: 933.406940063
+4623.0737 ,is the Loss
+Episode: 317, Total reward: 1030.0, Explore P: 0.1000, Running Average: 933.710691824
+612.30115 ,is the Loss
+Episode: 318, Total reward: 3670.0, Explore P: 0.1000, Running Average: 942.288401254
+5846.824 ,is the Loss
+Episode: 319, Total reward: 420.0, Explore P: 0.1000, Running Average: 940.65625
+1348.6484 ,is the Loss
+Episode: 320, Total reward: 680.0, Explore P: 0.1000, Running Average: 939.84423676
+824.5761 ,is the Loss
+Model Saved
+Episode: 321, Total reward: 480.0, Explore P: 0.1000, Running Average: 938.416149068
+3948.3435 ,is the Loss
+Episode: 322, Total reward: 380.0, Explore P: 0.1000, Running Average: 936.687306502
+1086.6318 ,is the Loss
+Episode: 323, Total reward: 500.0, Explore P: 0.1000, Running Average: 935.339506173
+1037.3823 ,is the Loss
+Episode: 324, Total reward: 540.0, Explore P: 0.1000, Running Average: 934.123076923
+2604.1545 ,is the Loss
+Episode: 325, Total reward: 320.0, Explore P: 0.1000, Running Average: 932.239263804
+916.5121 ,is the Loss
+Model Saved
+Episode: 326, Total reward: 600.0, Explore P: 0.1000, Running Average: 931.22324159
+1689.4354 ,is the Loss
+Episode: 327, Total reward: 640.0, Explore P: 0.1000, Running Average: 930.335365854
+3276.7527 ,is the Loss
+Episode: 328, Total reward: 460.0, Explore P: 0.1000, Running Average: 928.905775076
+2713.0457 ,is the Loss
+Episode: 329, Total reward: 1100.0, Explore P: 0.1000, Running Average: 929.424242424
+365.87033 ,is the Loss
+Episode: 330, Total reward: 380.0, Explore P: 0.1000, Running Average: 927.764350453
+1486.3241 ,is the Loss
+Model Saved
+Episode: 331, Total reward: 440.0, Explore P: 0.1000, Running Average: 926.295180723
+3253.3389 ,is the Loss
+Episode: 332, Total reward: 420.0, Explore P: 0.1000, Running Average: 924.774774775
+1086.7357 ,is the Loss
+Episode: 333, Total reward: 500.0, Explore P: 0.1000, Running Average: 923.502994012
+1989.0344 ,is the Loss
+Episode: 334, Total reward: 200.0, Explore P: 0.1000, Running Average: 921.343283582
+1688.6744 ,is the Loss
+Episode: 335, Total reward: 500.0, Explore P: 0.1000, Running Average: 920.089285714
+1779.1788 ,is the Loss
+Model Saved
+Episode: 336, Total reward: 2280.0, Explore P: 0.1000, Running Average: 924.12462908
+4013.9988 ,is the Loss
+Episode: 337, Total reward: 660.0, Explore P: 0.1000, Running Average: 923.343195266
+1475.6072 ,is the Loss
+Episode: 338, Total reward: 1780.0, Explore P: 0.1000, Running Average: 925.87020649
+3586.7834 ,is the Loss
+Episode: 339, Total reward: 380.0, Explore P: 0.1000, Running Average: 924.264705882
+3999.7544 ,is the Loss
+Episode: 340, Total reward: 1720.0, Explore P: 0.1000, Running Average: 926.598240469
+3536.5762 ,is the Loss
+Model Saved
+Episode: 341, Total reward: 520.0, Explore P: 0.1000, Running Average: 925.409356725
+2999.2837 ,is the Loss
+Episode: 342, Total reward: 1280.0, Explore P: 0.1000, Running Average: 926.443148688
+2848.8022 ,is the Loss
+Episode: 343, Total reward: 2200.0, Explore P: 0.1000, Running Average: 930.145348837
+2036.2253 ,is the Loss
+Episode: 344, Total reward: 420.0, Explore P: 0.1000, Running Average: 928.666666667
+741.9299 ,is the Loss
+Episode: 345, Total reward: 3450.0, Explore P: 0.1000, Running Average: 935.953757225
+5013.9043 ,is the Loss
+Model Saved
+Episode: 346, Total reward: 440.0, Explore P: 0.1000, Running Average: 934.524495677
+6396.923 ,is the Loss
+Episode: 347, Total reward: 480.0, Explore P: 0.1000, Running Average: 933.218390805
+2248.2476 ,is the Loss
+Episode: 348, Total reward: 1510.0, Explore P: 0.1000, Running Average: 934.871060172
+2798.6147 ,is the Loss
+Episode: 349, Total reward: 1360.0, Explore P: 0.1000, Running Average: 936.085714286
+1299.675 ,is the Loss
+Episode: 350, Total reward: 1070.0, Explore P: 0.1000, Running Average: 936.467236467
+2761.1023 ,is the Loss
+Model Saved
+Episode: 351, Total reward: 740.0, Explore P: 0.1000, Running Average: 935.909090909
+5024.157 ,is the Loss
+Episode: 352, Total reward: 540.0, Explore P: 0.1000, Running Average: 934.787535411
+1038.8569 ,is the Loss
+Episode: 353, Total reward: 1480.0, Explore P: 0.1000, Running Average: 936.327683616
+2848.2793 ,is the Loss
+Episode: 354, Total reward: 460.0, Explore P: 0.1000, Running Average: 934.985915493
+1088.9749 ,is the Loss
+Episode: 355, Total reward: 340.0, Explore P: 0.1000, Running Average: 933.314606742
+1474.3152 ,is the Loss
+Model Saved
+Episode: 356, Total reward: 440.0, Explore P: 0.1000, Running Average: 931.932773109
+6652.5947 ,is the Loss
+Episode: 357, Total reward: 640.0, Explore P: 0.1000, Running Average: 931.117318436
+4721.3647 ,is the Loss
+Episode: 358, Total reward: 400.0, Explore P: 0.1000, Running Average: 929.637883008
+2773.2454 ,is the Loss
+Episode: 359, Total reward: 1560.0, Explore P: 0.1000, Running Average: 931.388888889
+4146.8804 ,is the Loss
+Episode: 360, Total reward: 990.0, Explore P: 0.1000, Running Average: 931.551246537
+1354.7917 ,is the Loss
+Model Saved
+Episode: 361, Total reward: 580.0, Explore P: 0.1000, Running Average: 930.580110497
+4421.056 ,is the Loss
+Episode: 362, Total reward: 640.0, Explore P: 0.1000, Running Average: 929.779614325
+1950.0142 ,is the Loss
+Episode: 363, Total reward: 380.0, Explore P: 0.1000, Running Average: 928.269230769
+3685.883 ,is the Loss
+Episode: 364, Total reward: 580.0, Explore P: 0.1000, Running Average: 927.315068493
+5570.908 ,is the Loss
+Episode: 365, Total reward: 1010.0, Explore P: 0.1000, Running Average: 927.540983607
+1910.8065 ,is the Loss
+Model Saved
+Episode: 366, Total reward: 620.0, Explore P: 0.1000, Running Average: 926.702997275
+3323.5852 ,is the Loss
+Episode: 367, Total reward: 540.0, Explore P: 0.1000, Running Average: 925.652173913
+2161.1963 ,is the Loss
+Episode: 368, Total reward: 2090.0, Explore P: 0.1000, Running Average: 928.807588076
+4508.1963 ,is the Loss
+Episode: 369, Total reward: 480.0, Explore P: 0.1000, Running Average: 927.594594595
+8184.4697 ,is the Loss
+Episode: 370, Total reward: 420.0, Explore P: 0.1000, Running Average: 926.226415094
+6848.5186 ,is the Loss
+Model Saved
+Episode: 371, Total reward: 180.0, Explore P: 0.1000, Running Average: 924.220430108
+2035.9183 ,is the Loss
+Episode: 372, Total reward: 1110.0, Explore P: 0.1000, Running Average: 924.71849866
+1051.0426 ,is the Loss
+Episode: 373, Total reward: 500.0, Explore P: 0.1000, Running Average: 923.582887701
+2938.0835 ,is the Loss
+Episode: 374, Total reward: 280.0, Explore P: 0.1000, Running Average: 921.866666667
+4072.715 ,is the Loss
+Episode: 375, Total reward: 1350.0, Explore P: 0.1000, Running Average: 923.005319149
+2961.06 ,is the Loss
+Model Saved
+Episode: 376, Total reward: 480.0, Explore P: 0.1000, Running Average: 921.830238727
+3296.039 ,is the Loss
+Episode: 377, Total reward: 960.0, Explore P: 0.1000, Running Average: 921.931216931
+6384.444 ,is the Loss
+Episode: 378, Total reward: 400.0, Explore P: 0.1000, Running Average: 920.55408971
+6647.5537 ,is the Loss
+Episode: 379, Total reward: 730.0, Explore P: 0.1000, Running Average: 920.052631579
+6047.371 ,is the Loss
+Episode: 380, Total reward: 1150.0, Explore P: 0.1000, Running Average: 920.656167979
+7585.2686 ,is the Loss
+Model Saved
+Episode: 381, Total reward: 380.0, Explore P: 0.1000, Running Average: 919.240837696
+3422.8345 ,is the Loss
+Episode: 382, Total reward: 440.0, Explore P: 0.1000, Running Average: 917.989556136
+3659.8389 ,is the Loss
+Episode: 383, Total reward: 200.0, Explore P: 0.1000, Running Average: 916.119791667
+5151.711 ,is the Loss
+Episode: 384, Total reward: 600.0, Explore P: 0.1000, Running Average: 915.298701299

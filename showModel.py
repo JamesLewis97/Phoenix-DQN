@@ -448,9 +448,11 @@ with tf.Session() as sess:
     totalScore = 0
     
    
+    #saver.restore(sess, "./models/model.ckpt")
     # Load the model
-    saver.restore(sess, "./models/model.ckpt")
-    for i in range(10):
+    for i in range(1,125):
+        
+        saver.restore(sess, "m/models{}/model.ckpt".format(i))
         done=False
         state=game.reset()
         reward=0
@@ -472,8 +474,8 @@ with tf.Session() as sess:
             state,stacked_Frames=stack_frames(state1,state2,state3,state4)
             steps=steps+1
             
-        print("Score: ", reward,steps)
+        print(i,"Score: ", reward,steps)
         totalScore += reward
-    print("TOTAL_SCORE", totalScore/100.0)
+    print("TOTAL_SCORE", totalScore/125.0)
     game.close()
 

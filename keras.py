@@ -93,7 +93,7 @@ max_steps = 50000              # Max possible steps in an episode
 batch_size = 32             
 
 # Exploration parameters for epsilon greedy strategy
-explore_start = 1.0            # exploration probability at start
+explore_start = 0.1            # exploration probability at start
 explore_stop = 0.1            # minimum exploration probability 
 decay_rate = 0.0004            # exponential decay rate for exploration prob
 
@@ -206,6 +206,7 @@ DQNetwork1 = DQNetwork(state_size, action_size, learning_rate, "DQNetwork")
 
 TargetNetwork = DQNetwork(state_size, action_size, learning_rate, "TargetNetwork")
 
+saver = tf.train.Saver()
 class Memory():
     def __init__(self, max_size):
         self.buffer = deque(maxlen = max_size)
@@ -227,50 +228,53 @@ memory = Memory(max_size = memory_size)
 
 # Render the environment
 game.reset()
-
-for i in range(pretrain_length):
-    # If it's the first step
-    if i == 0:
-        # First we need a state
-        state = game.reset()
-        state, stacked_frames = stack_frames(state,state,state,state)
-    
-    # Random action
-    choice=random.randint(1,len(possible_actions))-1
-    action= possible_actions[choice]
-
-    next_state1, reward1,done1,_ = game.step(choice)
-    next_state2, reward2,done2,_ = game.step(choice)
-    next_state3, reward3,done3,_ = game.step(choice)
-    next_state4, reward4,done4,_ = game.step(choice)
-    reward= reward1+reward2+reward3+reward4;
-    next_state,stacked_frames= stack_frames(next_state1,next_state2,next_state3,next_state4)
-    done= done1 or done2 or done3 or done4
-
-    if done:
-        #Finished the episode
-
-        next_state = game.reset()
-        next_state,stacked_frames=stack_frames(next_state,next_state,next_state,next_state)
-        # Add experience to memory
-        memory.add((state, action, reward, next_state, done))
+with tf.Session() as sess:
+    saver.restore(sess,"./models/model.ckpt")
+    for i in range(pretrain_length):
+        # If it's the first step
+        if i == 0:
+            # First we need a state
+            state = game.reset()
+            state, stacked_frames = stack_frames(state,state,state,state)
         
-        # Start a new episode
-        state=game.reset()
-         
-        # Stack the frames
-        state, stacked_frames = stack_frames(state,state,state,state)
-        
-    else:
-        # Get the next state
-        #next_state, stacked_frames = stack_frames(stacked_frames, next_state, False)
-        
-        # Add experience to memory
-        memory.add((state, action, reward, next_state, done))
-        
-        # Our state is now the next_state
-        state = next_state
-print("Memory Ready")
+        # Random action
+        #choice=random.randint(1,len(possible_actions))-1
+        #action= possible_actions[choice]
+        Qs = sess.run(DQNetwork1.output, feed_dict = {DQNetwork1.inputs_: state.reshape((1, 80,80,4))})
+        choice=np.argmax(Qs)
+        action=possible_actions[choice]
+        next_state1, reward1,done1,_ = game.step(choice)
+        next_state2, reward2,done2,_ = game.step(choice)
+        next_state3, reward3,done3,_ = game.step(choice)
+        next_state4, reward4,done4,_ = game.step(choice)
+        reward= reward1+reward2+reward3+reward4;
+        next_state,stacked_frames= stack_frames(next_state1,next_state2,next_state3,next_state4)
+        done= done1 or done2 or done3 or done4
+
+        if done:
+            #Finished the episode
+
+            next_state = game.reset()
+            next_state,stacked_frames=stack_frames(next_state,next_state,next_state,next_state)
+            # Add experience to memory
+            memory.add((state, action, reward, next_state, done))
+            
+            # Start a new episode
+            state=game.reset()
+             
+            # Stack the frames
+            state, stacked_frames = stack_frames(state,state,state,state)
+            
+        else:
+            # Get the next state
+            #next_state, stacked_frames = stack_frames(stacked_frames, next_state, False)
+            
+            # Add experience to memory
+            memory.add((state, action, reward, next_state, done))
+            
+            # Our state is now the next_state
+            state = next_state
+    print("Memory Ready")
 
 
 # Setup TensorBoard Writer
@@ -306,14 +310,13 @@ def predict_action(explore_start, explore_stop, decay_rate, decay_step, state, a
     return action, explore_probability
 
 
-saver = tf.train.Saver()
 
 if training == True:
     print("Training Started")
     with tf.Session() as sess:
         # Initialize the variables
-        sess.run(tf.global_variables_initializer())
-                
+        #sess.run(tf.global_variables_initializer())
+        saver.restore(sess, "./models/model.ckpt")       
         # Initialize the decay rate (that will use to reduce epsilon) 
         decay_step = 0
 
@@ -431,7 +434,7 @@ if training == True:
                 writer.flush()
 
             # Save model every 5 episodes
-            if episode % 50 == 0:
+            if episode % 100 == 0:
                 save_path = saver.save(sess, "./models/model.ckpt")
                 update_target=update_target_graph()
                 sess.run(update_target)

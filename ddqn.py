@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# This is the final version
 
 import tensorflow as tf      # Deep Learning library
 import numpy as np           # Handle matrices
